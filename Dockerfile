@@ -34,12 +34,14 @@ RUN cd /opt && wget https://files.minecraftforge.net/maven/net/minecraftforge/fo
 
 COPY server.properties /opt/server.properties
 
+COPY mods.txt /opt/mods/mods.txt
+
 #-------------------------------------------------------------------------------
 #  Download Minecraft mods
 #-------------------------------------------------------------------------------
 RUN cd /opt/mods \
-    && wget https://media.forgecdn.net/files/2653/725/ClaySoldiersMod-1.12.2-3.0.0-beta.2.jar \
-    && wget https://media.forgecdn.net/files/2653/971/SanLib-1.12.2-1.5.1.jar
+    && bash -c 'declare -a mods; readarray mods < mods.txt; regex="^.*\.jar"; \
+                for mod in ${mods[@]}; do if [[ $mod =~ $regex ]]; then wget $mod; fi; done'
 
 VOLUME ["/opt/data", "/opt/config"]
 

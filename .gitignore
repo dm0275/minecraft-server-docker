@@ -1,3 +1,7 @@
+# Directories
 config/
 data/
 mods/
+
+# Files
+test.sh

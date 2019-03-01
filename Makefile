@@ -19,6 +19,7 @@ stop: ## Stop
 	docker rm -f minecraft
 
 clean: ## Clean
+	if [ "$$(docker ps -aq -f name=minecraft)" ]; then docker rm -f minecraft; fi;
 	rm -rf data config
 
 help: ## This help dialog.

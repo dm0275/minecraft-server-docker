@@ -2,6 +2,7 @@
 config/
 data/
 mods/
+world/
 
 # Files
 test.sh

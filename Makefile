@@ -6,8 +6,8 @@ build: ## Build image
 	docker build -t fl/minecraft:latest .
 
 run: ## Run in foreground
-	mkdir -p data config
-	docker run -it --name minecraft -p 25565:25565 -v $$PWD/data:/opt/data -v $$PWD/config:/opt/config fl/minecraft:latest
+	mkdir -p data config world
+	docker run -it --name minecraft -p 25565:25565 -v $$PWD/data:/opt/data -v $$PWD/world:/opt/world -v $$PWD/config:/opt/config fl/minecraft:latest
 
 login: ## Login
 	docker exec -it minecraft bash

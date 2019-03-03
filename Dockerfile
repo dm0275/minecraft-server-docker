@@ -30,7 +30,7 @@ RUN apk update && apk upgrade \
 RUN cd /opt && wget https://files.minecraftforge.net/maven/net/minecraftforge/forge/"${MC_VERSION}"-"${FORGE_VERSION}"/forge-"${MC_VERSION}"-"${FORGE_VERSION}"-installer.jar \
     && java -jar forge-"${MC_VERSION}"-"${FORGE_VERSION}"-installer.jar --installServer \
     && echo "eula=true" > eula.txt \
-    && mkdir /opt/data /opt/mods
+    && mkdir /opt/data /opt/mods /opt/world
 
 COPY server.properties /opt/server.properties
 
@@ -43,7 +43,7 @@ RUN cd /opt/mods \
     && bash -c 'declare -a mods; readarray mods < mods.txt; regex="^.*\.jar"; \
                 for mod in ${mods[@]}; do if [[ $mod =~ $regex ]]; then wget $mod; fi; done'
 
-VOLUME ["/opt/data", "/opt/config"]
+VOLUME ["/opt/data", "/opt/config", "/opt/world"]
 
 RUN chown -R "${MC_USER}":"${MC_USER}" /opt 
 WORKDIR /opt

@@ -13,7 +13,8 @@ login: ## Login
 	docker exec -it minecraft bash
 
 rund: ## Run in background
-	docker run -d --name minecraft -p 25565:25565 -v $$PWD/data:/opt/data -v $$PWD/config:/opt/config fl/minecraft:latest
+	mkdir -p data config world
+	docker run -d --name minecraft -p 25565:25565 -v $$PWD/data:/opt/data -v $$PWD/world:/opt/world -v $$PWD/config:/opt/config fl/minecraft:latest
 
 stop: ## Stop
 	docker rm -f minecraft

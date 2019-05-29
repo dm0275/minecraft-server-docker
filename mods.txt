@@ -1,3 +1,0 @@
-#ClaySoldiersMod
-https://media.forgecdn.net/files/2653/725/ClaySoldiersMod-1.12.2-3.0.0-beta.2.jar #ClaySoldiersMod
-https://media.forgecdn.net/files/2653/971/SanLib-1.12.2-1.5.1.jar #ClaySoldiersMod-Dependency

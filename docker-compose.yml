@@ -2,13 +2,15 @@ version: '3'
 
 services:
   minecraft:
-    image: minecraft:latest
+    image: fl/minecraft:latest
     container_name: minecraft
     ports:
       - "25565:25565"
     volumes:
-      #- ./mods:/opt/mods
-      - ./data:/opt/data
-      - ./config:/opt/config
-# volumes:
-#   db: {}
+      - ./world:/opt/minecraft/world
+      - ./data:/opt/minecraft/data
+      - ./mods:/opt/minecraft/mods
+volumes:
+  world: {}
+  data: {}
+  mods: {}

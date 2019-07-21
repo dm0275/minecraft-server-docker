@@ -3,6 +3,7 @@ config/
 data/
 mods/
 world/
+matt_dad_world/
 
 # Files
 test.sh

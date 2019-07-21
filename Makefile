@@ -9,7 +9,7 @@ MC_VANILLA_LINK=https://launcher.mojang.com/v1/objects/808be3869e2ca6b62378f9f4b
 VCS_REF=$(shell git rev-parse --short HEAD)
 GIT_TAG=$(QNAME):$(VCS_REF)
 VERSION_TAG_VANILLA=$(QNAME):$(MC_VERSION_VANILLA)
-VERSION_TAG_FORGE=$(QNAME):$(MC_VERSION_FORGE)
+VERSION_TAG_FORGE=$(QNAME)_forge:$(MC_VERSION_FORGE)
 LATEST_TAG=$(QNAME):latest
 
 .PHONY: help
@@ -30,10 +30,9 @@ build_forge: ## Build image
 		-t $(VERSION_TAG_FORGE) \
 		-t $(LATEST_TAG) .
 
-build-vanilla: ## Build Vanilla image
+build_vanilla: ## Build Vanilla image
 	docker build \
 		--file vanilla-server-Dockerfile \
-		--build-arg mc_vanilla=true \
 		--build-arg mc_version=$(MC_VERSION_VANILLA) \
 		--build-arg mc_url_link=$(MC_VANILLA_LINK) \
 		-t $(GIT_TAG) \
@@ -41,10 +40,10 @@ build-vanilla: ## Build Vanilla image
 		-t $(LATEST_TAG) .
 
 run_forge: setup ## Run in foreground
-	docker run -it --name minecraft -p 25565:25565 $(ENV) -e MC_VANILLA=false $(VOL) fl/minecraft:$(MC_VERSION_FORGE)
+	docker run --rm -it --name minecraft -p 25565:25565 $(ENV) $(VOL) fl/minecraft_forge:$(MC_VERSION_FORGE)
 
 run_vanilla: setup ## Run in foreground
-	docker run -it --name minecraft -p 25565:25565 $(ENV) $(VOL) fl/minecraft:$(MC_VERSION_VANILLA)
+	docker run --rm -it --name minecraft -p 25565:25565 $(ENV) $(VOL) fl/minecraft:$(MC_VERSION_VANILLA)
 
 login: ## Login
 	docker exec -it minecraft bash

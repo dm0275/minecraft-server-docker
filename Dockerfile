@@ -10,7 +10,7 @@ ENV JAVA_MIN_MEM        1G
 ENV JAVA_MAX_MEM        2G
 ENV MC_USER             minecraft
 ENV MC_USER_ID          1000
-ENV MC_VANILLA          ${mc_vanilla}
+ENV MC_VANILLA          false
 ENV MC_VERSION          ${mc_version}
 ENV FORGE_VERSION       ${forge_version}
 ENV MINECRAFT_HOME      /opt/minecraft

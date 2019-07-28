@@ -15,9 +15,11 @@ FORGE_VERSION=$(FORGE_14)
 
 VCS_REF=$(shell git rev-parse --short HEAD)
 GIT_TAG=$(QNAME):$(VCS_REF)
+GIT_TAG_FORGE=$(QNAME)_forge:$(VCS_REF)
 VERSION_TAG=$(QNAME):$(MC_VERSION)
 VERSION_TAG_FORGE=$(QNAME)_forge:$(MC_VERSION_FORGE)
 LATEST_TAG=$(QNAME):latest
+LATEST_TAG_FORGE=$(QNAME)_forge:latest
 
 .PHONY: help
 .DEFAULT_GOAL := help
@@ -33,29 +35,32 @@ build_forge: ## Build image
 	docker build \
 		--build-arg mc_version=$(MC_VERSION_FORGE) \
 		--build-arg forge_version=$(FORGE_VERSION) \
-		-t $(GIT_TAG) \
+		-t $(GIT_TAG_FORGE) \
 		-t $(VERSION_TAG_FORGE) \
-		-t $(LATEST_TAG) .
+		-t $(LATEST_TAG_FORGE) .
 
-build_vanilla: ## Build Vanilla image
+build: ## Build Vanilla image
 	docker build \
 		--file vanilla-server-Dockerfile \
 		--build-arg mc_version=$(MC_VERSION) \
 		--build-arg mc_url_link=$(MC_URL_LINK) \
 		-t $(GIT_TAG) \
-		-t $(VERSION_TAG_VANILLA) \
+		-t $(VERSION_TAG) \
 		-t $(LATEST_TAG) .
-
-run_forge: setup ## Run in foreground
-	docker run --rm -it --name minecraft -p 25565:25565 $(ENV) $(VOL) fl/minecraft_forge:$(MC_VERSION_FORGE)
-
-run_vanilla: setup ## Run in foreground
-	docker run --rm -it --name minecraft -p 25565:25565 $(ENV) $(VOL) fl/minecraft:$(MC_VERSION)
 
 login: ## Login
 	docker exec -it minecraft bash
 
-rund: setup ## Run in background
+run: setup ## Run Minecraft in foreground
+	docker run --rm -it --name minecraft -p 25565:25565 $(ENV) $(VOL) fl/minecraft:$(MC_VERSION)
+
+run_forge: setup ## Run Minecraft Forge in foreground
+	docker run --rm -it --name minecraft -p 25565:25565 $(ENV) $(VOL) fl/minecraft_forge:$(MC_VERSION_FORGE)
+
+rund: setup ## Run Minecraft in the background
+	docker run -d --name minecraft -p 25565:25565 -p 25565:25565 $(ENV) $(VOL) fl/minecraft:$(MC_VERSION)
+
+rund_forge: setup ## Run Minecraft Forge in the background
 	docker run -d --name minecraft -p 25565:25565 -p 25565:25565 $(ENV) $(VOL) fl/minecraft:$(MC_VERSION)
 
 setup: ## Create DIRs

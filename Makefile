@@ -42,14 +42,6 @@ ENV_FORGE=export MC_VERSION=$(MC_VERSION) \
 	WORLD_DIR=$$PWD/world_forge \
 	MODS_DIR=$$PWD/mods
 
-build_forge: ## Build image
-	docker build \
-		--build-arg mc_version=$(MC_VERSION_FORGE) \
-		--build-arg forge_version=$(FORGE_VERSION) \
-		-t $(GIT_TAG_FORGE) \
-		-t $(VERSION_TAG_FORGE) \
-		-t $(LATEST_TAG_FORGE) .
-
 build: ## Build Vanilla image
 	docker build \
 		--file vanilla-server-Dockerfile \
@@ -59,35 +51,43 @@ build: ## Build Vanilla image
 		-t $(VERSION_TAG) \
 		-t $(LATEST_TAG) .
 
+build_forge: ## Build image
+	docker build \
+		--build-arg mc_version=$(MC_VERSION_FORGE) \
+		--build-arg forge_version=$(FORGE_VERSION) \
+		-t $(GIT_TAG_FORGE) \
+		-t $(VERSION_TAG_FORGE) \
+		-t $(LATEST_TAG_FORGE) .
+
 login: ## Login
 	docker exec -it minecraft bash
-
-run: setup ## Run Minecraft in foreground
-	$(ENV) && docker-compose up
-
-run_forge: setup_forge ## Run Minecraft Forge in foreground
-	$(ENV_FORGE) && docker-compose up
-
-rund: setup ## Run Minecraft in the background
-	$(ENV) && docker-compose up -d
-
-rund_forge: setup_forge ## Run Minecraft Forge in the background
-	$(ENV_FORGE) && docker-compose up -d
 
 setup: ## Create DIRs
 	mkdir -p data mods world
 
-setup_forge: ## Create Forge DIRs
-	mkdir -p data_forge mods world_forge
+run: setup ## Run Minecraft in foreground
+	$(ENV) && docker-compose up
+
+rund: setup ## Run Minecraft in the background
+	$(ENV) && docker-compose up -d
 
 stop: ## Stop Container
 	$(ENV) && docker-compose stop
 
-stop_forge: ## Stop Container
-	$(ENV_FORGE) && docker-compose stop
-
 clean: ## Clean Containers
 	$(ENV) && docker-compose rm -f -s
+
+setup_forge: ## Create Forge DIRs
+	mkdir -p data_forge mods world_forge
+
+run_forge: setup_forge ## Run Minecraft Forge in foreground
+	$(ENV_FORGE) && docker-compose up
+
+rund_forge: setup_forge ## Run Minecraft Forge in the background
+	$(ENV_FORGE) && docker-compose up -d
+
+stop_forge: ## Stop Container
+	$(ENV_FORGE) && docker-compose stop
 
 clean_forge: ## Clean Containers
 	$(ENV_FORGE) && docker-compose rm -f -s

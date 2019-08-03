@@ -52,16 +52,16 @@ login: ## Login
 	docker exec -it minecraft bash
 
 run: setup ## Run Minecraft in foreground
-	docker run --rm -it --name minecraft -p 25565:25565 $(ENV) $(VOL) fl/minecraft:$(MC_VERSION)
+	docker run --rm -it --name minecraft -p 25565:25565 $(ENV) $(VOL) fussionlabs/minecraft:$(MC_VERSION)
 
 run_forge: setup ## Run Minecraft Forge in foreground
-	docker run --rm -it --name minecraft -p 25565:25565 $(ENV) $(VOL) fl/minecraft_forge:$(MC_VERSION_FORGE)
+	docker run --rm -it --name minecraft -p 25565:25565 $(ENV) $(VOL) fussionlabs/minecraft_forge:$(MC_VERSION_FORGE)
 
 rund: setup ## Run Minecraft in the background
-	docker run -d --name minecraft -p 25565:25565 -p 25565:25565 $(ENV) $(VOL) fl/minecraft:$(MC_VERSION)
+	docker run -d --name minecraft -p 25565:25565 -p 25565:25565 $(ENV) $(VOL) fussionlabs/minecraft:$(MC_VERSION)
 
 rund_forge: setup ## Run Minecraft Forge in the background
-	docker run -d --name minecraft -p 25565:25565 -p 25565:25565 $(ENV) $(VOL) fl/minecraft:$(MC_VERSION)
+	docker run -d --name minecraft -p 25565:25565 -p 25565:25565 $(ENV) $(VOL) fussionlabs/minecraft:$(MC_VERSION)
 
 setup: ## Create DIRs
 	mkdir -p data mods world

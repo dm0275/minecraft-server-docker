@@ -2,14 +2,19 @@ version: '3'
 
 services:
   minecraft:
-    image: fl/minecraft:latest
+    tty: true
+    stdin_open: true
+    image: "$MC_IMAGE"
     container_name: minecraft
     ports:
-      - "25565:25565"
+      - "$PORT:25565"
     volumes:
-      - ./world:/opt/minecraft/world
-      - ./data:/opt/minecraft/data
-      - ./mods:/opt/minecraft/mods
+      - $WORLD_DIR:/opt/minecraft/world
+      - $DATA_DIR:/opt/minecraft/data
+      - $MODS_DIR:/opt/minecraft/mods
+    environment:
+      - GAMEMODE
+      - MAX_PLAYERS
 volumes:
   world: {}
   data: {}

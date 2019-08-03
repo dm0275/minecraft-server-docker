@@ -4,6 +4,8 @@ data/
 mods/
 world/
 matt_dad_world/
+data_forge/
+world_forge/
 
 # Files
 test.sh

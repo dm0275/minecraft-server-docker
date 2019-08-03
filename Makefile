@@ -8,6 +8,7 @@ FORGE_12=12.18.3.2511 ## Minecraft v1.10.2
 FORGE_14=14.23.5.2814  ## Minecraft v1.12.2
 MC_14_URL=https://launcher.mojang.com/v1/objects/808be3869e2ca6b62378f9f4b33c946621620019/server.jar
 
+MC_PORT=25565
 MC_VERSION=$(MC_14)
 MC_URL_LINK=$(MC_14_URL)
 MC_VERSION_FORGE=$(MC_12)
@@ -24,12 +25,22 @@ LATEST_TAG_FORGE=$(QNAME)_forge:latest
 .PHONY: help
 .DEFAULT_GOAL := help
 
-ENV=-e GAMEMODE=1 \
-	-e MAX_PLAYERS=10
+ENV=export MC_IMAGE=$(VERSION_TAG) \
+	PORT=$(MC_PORT) \
+	GAMEMODE=1 \
+	MAX_PLAYERS=10 \
+	DATA_DIR=$$PWD/data \
+	WORLD_DIR=$$PWD/world \
+	MODS_DIR=$$PWD/mods
 
-VOL=-v $$PWD/data:/opt/minecraft/data \
-	-v $$PWD/world:/opt/minecraft/world \
-	-v $$PWD/mods:/opt/minecraft/mods
+ENV_FORGE=export MC_VERSION=$(MC_VERSION) \
+	PORT=$(MC_PORT) \
+	GAMEMODE=1 \
+	MAX_PLAYERS=10 \
+	MC_IMAGE=$(VERSION_TAG_FORGE) \
+	DATA_DIR=$$PWD/data_forge \
+	WORLD_DIR=$$PWD/world_forge \
+	MODS_DIR=$$PWD/mods
 
 build_forge: ## Build image
 	docker build \
@@ -52,25 +63,34 @@ login: ## Login
 	docker exec -it minecraft bash
 
 run: setup ## Run Minecraft in foreground
-	docker run --rm -it --name minecraft -p 25565:25565 $(ENV) $(VOL) fussionlabs/minecraft:$(MC_VERSION)
+	$(ENV) && docker-compose up
 
-run_forge: setup ## Run Minecraft Forge in foreground
-	docker run --rm -it --name minecraft -p 25565:25565 $(ENV) $(VOL) fussionlabs/minecraft_forge:$(MC_VERSION_FORGE)
+run_forge: setup_forge ## Run Minecraft Forge in foreground
+	$(ENV_FORGE) && docker-compose up
 
 rund: setup ## Run Minecraft in the background
-	docker run -d --name minecraft -p 25565:25565 -p 25565:25565 $(ENV) $(VOL) fussionlabs/minecraft:$(MC_VERSION)
+	$(ENV) && docker-compose up -d
 
-rund_forge: setup ## Run Minecraft Forge in the background
-	docker run -d --name minecraft -p 25565:25565 -p 25565:25565 $(ENV) $(VOL) fussionlabs/minecraft:$(MC_VERSION)
+rund_forge: setup_forge ## Run Minecraft Forge in the background
+	$(ENV_FORGE) && docker-compose up -d
 
 setup: ## Create DIRs
 	mkdir -p data mods world
 
+setup_forge: ## Create Forge DIRs
+	mkdir -p data_forge mods world_forge
+
 stop: ## Stop Container
-	docker rm -f minecraft
+	$(ENV) && docker-compose stop
+
+stop_forge: ## Stop Container
+	$(ENV_FORGE) && docker-compose stop
 
 clean: ## Clean Containers
-	if [ "$$(docker ps -aq -f name=minecraft)" ]; then docker rm -f "$$(docker ps -aq -f name=minecraft)"; fi;
+	$(ENV) && docker-compose rm -f -s
+
+clean_forge: ## Clean Containers
+	$(ENV_FORGE) && docker-compose rm -f -s
 
 clean-dirs: clean ## Clean DIRs
 	rm -rf data mods world

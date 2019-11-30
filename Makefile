@@ -3,16 +3,17 @@ RUN=$(DC) run minecraft
 QNAME=fussionlabs/minecraft
 
 MC_12=1.12.2
-MC_14=1.14.2
-FORGE_12=12.18.3.2511 ## Minecraft v1.10.2
-FORGE_14=14.23.5.2814  ## Minecraft v1.12.2
-MC_14_URL=https://launcher.mojang.com/v1/objects/808be3869e2ca6b62378f9f4b33c946621620019/server.jar
+MC_14=1.14.4
+FORGE_12=14.23.5.2772  ## Minecraft v1.10.2
+FORGE_14=14.23.5.2772  ## Minecraft v1.12.2
+#MC_14_URL=https://launcher.mojang.com/v1/objects/808be3869e2ca6b62378f9f4b33c946621620019/server.jar
+MC_14_URL=https://launcher.mojang.com/v1/objects/3dc3d84a581f14691199cf6831b71ed1296a9fdf/server.jar
 
 MC_PORT=25565
 MC_VERSION=$(MC_14)
 MC_URL_LINK=$(MC_14_URL)
 MC_VERSION_FORGE=$(MC_12)
-FORGE_VERSION=$(FORGE_14)
+FORGE_VERSION=$(FORGE_12)
 
 VCS_REF=$(shell git rev-parse --short HEAD)
 GIT_TAG=$(QNAME):$(VCS_REF)
@@ -27,6 +28,8 @@ LATEST_TAG_FORGE=$(QNAME)_forge:latest
 
 ENV=export MC_IMAGE=$(VERSION_TAG) \
 	PORT=$(MC_PORT) \
+	JAVA_MIN_MEM=3G \
+	JAVA_MAX_MEM=3G \
 	GAMEMODE=1 \
 	MAX_PLAYERS=10 \
 	DATA_DIR=$$PWD/data \
@@ -35,6 +38,8 @@ ENV=export MC_IMAGE=$(VERSION_TAG) \
 
 ENV_FORGE=export MC_VERSION=$(MC_VERSION) \
 	PORT=$(MC_PORT) \
+	JAVA_MIN_MEM=3G \
+	JAVA_MAX_MEM=3G \
 	GAMEMODE=1 \
 	MAX_PLAYERS=10 \
 	MC_IMAGE=$(VERSION_TAG_FORGE) \

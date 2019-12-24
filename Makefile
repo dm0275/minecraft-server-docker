@@ -1,11 +1,13 @@
 DC=docker-compose
 RUN=$(DC) run minecraft
-QNAME=fussionlabs/minecraft
+QNAME=dm0275/minecraft-server
 
 MC_12=1.12.2
 MC_14=1.14.2
+
 FORGE_12=12.18.3.2511 ## Minecraft v1.10.2
 FORGE_14=14.23.5.2814  ## Minecraft v1.12.2
+
 MC_14_URL=https://launcher.mojang.com/v1/objects/808be3869e2ca6b62378f9f4b33c946621620019/server.jar
 
 MC_PORT=25565
@@ -16,11 +18,11 @@ FORGE_VERSION=$(FORGE_14)
 
 VCS_REF=$(shell git rev-parse --short HEAD)
 GIT_TAG=$(QNAME):$(VCS_REF)
-GIT_TAG_FORGE=$(QNAME)_forge:$(VCS_REF)
+GIT_TAG_FORGE=$(QNAME):forge-$(VCS_REF)
 VERSION_TAG=$(QNAME):$(MC_VERSION)
-VERSION_TAG_FORGE=$(QNAME)_forge:$(MC_VERSION_FORGE)
+VERSION_TAG_FORGE=$(QNAME):forge-$(MC_VERSION_FORGE)
 LATEST_TAG=$(QNAME):latest
-LATEST_TAG_FORGE=$(QNAME)_forge:latest
+LATEST_TAG_FORGE=$(QNAME):forge-latest
 
 .PHONY: help
 .DEFAULT_GOAL := help
@@ -44,7 +46,7 @@ ENV_FORGE=export MC_VERSION=$(MC_VERSION) \
 
 build: ## Build Vanilla image
 	docker build \
-		--file vanilla-server-Dockerfile \
+		--file vanilla/Dockerfile \
 		--build-arg mc_version=$(MC_VERSION) \
 		--build-arg mc_url_link=$(MC_URL_LINK) \
 		-t $(GIT_TAG) \
@@ -53,6 +55,7 @@ build: ## Build Vanilla image
 
 build_forge: ## Build image
 	docker build \
+		--file forge/Dockerfile \
 		--build-arg mc_version=$(MC_VERSION_FORGE) \
 		--build-arg forge_version=$(FORGE_VERSION) \
 		-t $(GIT_TAG_FORGE) \

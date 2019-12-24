@@ -11,9 +11,15 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build Vanilla image
       run: make build
-    - name: Push Vanilla image
-      run: make push
     - name: Build Forge image
       run: make build_forge
+    - name: Push Vanilla image
+      env:
+        DOCKER_USERNAME: ${{ secrets.dockerUsername }}
+        DOCKER_TOKEN: ${{ secrets.dockerToken }}
+      run: make push
     - name: Push Forge image
+      env:
+        DOCKER_USERNAME: ${{ secrets.dockerUsername }}
+        DOCKER_TOKEN: ${{ secrets.dockerToken }}
       run: make push_forge

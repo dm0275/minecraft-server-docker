@@ -67,7 +67,9 @@ build_forge: ## Build image
 		-t $(LATEST_TAG_FORGE) .
 
 login: ## Login
-	docker exec -it minecraft bash
+	@printenv DOCKER_TOKEN \
+	  | docker login -u "$(DOCKER_USERNAME)" \
+	      --password-stdin
 
 setup: ## Create DIRs
 	mkdir -p data mods world

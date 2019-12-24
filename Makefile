@@ -3,10 +3,10 @@ RUN=$(DC) run minecraft
 QNAME=dm0275/minecraft-server
 
 MC_12=1.12.2
-MC_14=1.14.2
+MC_14=1.14.4
 
 FORGE_12=12.18.3.2511 ## Minecraft v1.10.2
-FORGE_14=14.23.5.2814  ## Minecraft v1.12.2
+FORGE_14=14.23.5.2772  ## Minecraft v1.12.2
 
 MC_14_URL=https://launcher.mojang.com/v1/objects/3dc3d84a581f14691199cf6831b71ed1296a9fdf/server.jar
 
@@ -14,7 +14,7 @@ MC_PORT=25565
 MC_VERSION=$(MC_14)
 MC_URL_LINK=$(MC_14_URL)
 MC_VERSION_FORGE=$(MC_12)
-FORGE_VERSION=$(FORGE_12)
+FORGE_VERSION=$(FORGE_14)
 
 VCS_REF=$(shell git rev-parse --short HEAD)
 GIT_TAG=$(QNAME):$(VCS_REF)

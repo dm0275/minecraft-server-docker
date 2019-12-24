@@ -1,11 +1,13 @@
 # Directories
 config/
 data/
-mods/
-world/
+mods
+world
 matt_dad_world/
 data_forge/
 world_forge/
+world*/
+mods*/
 
 # Files
 test.sh

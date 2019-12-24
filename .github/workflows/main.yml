@@ -9,9 +9,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Run a one-line script
+    - name: Build Vanilla image
       run: make build
-#     - name: Run a multi-line script
-#       run: |
-#         echo Add other actions to build,
-#         echo test, and deploy your project.
+    - name: Push Vanilla image
+      run: make push
+    - name: Build Forge image
+      run: make build_forge
+    - name: Push Forge image
+      run: make push_forge

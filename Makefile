@@ -99,6 +99,16 @@ stop_forge: ## Stop Container
 clean_forge: ## Clean Containers
 	$(ENV_FORGE) && docker-compose rm -f -s
 
+push: ## Push Vanilla image
+	docker push $(GIT_TAG)
+	docker push $(VERSION_TAG)
+	docker push $(LATEST_TAG)
+
+push_forge: ## Push Forge image
+	docker push $(GIT_TAG_FORGE)
+	docker push $(VERSION_TAG_FORGE)
+	docker push $(LATEST_TAG_FORGE)
+
 clean-dirs: clean ## Clean DIRs
 	rm -rf data mods world
 

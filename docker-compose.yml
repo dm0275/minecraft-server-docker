@@ -2,8 +2,6 @@ version: '3'
 
 services:
   minecraft:
-    tty: true
-    stdin_open: true
     image: "$MC_IMAGE"
     container_name: minecraft
     ports:

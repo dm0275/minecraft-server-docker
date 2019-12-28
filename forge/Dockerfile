@@ -14,6 +14,7 @@ ENV MC_VANILLA          false
 ENV MC_VERSION          ${mc_version}
 ENV FORGE_VERSION       ${forge_version}
 ENV MINECRAFT_HOME      /opt/minecraft
+ENV JAVA_HOME           /usr/lib/jvm/java-1.8-openjdk
 
 EXPOSE 25565
 

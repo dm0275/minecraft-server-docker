@@ -15,6 +15,7 @@ ENV MC_VERSION          ${mc_version}
 ENV MC_VANILLA          true
 ENV MC_URL_LINK         ${mc_url_link}
 ENV MINECRAFT_HOME      /opt/minecraft
+ENV JAVA_HOME           /usr/lib/jvm/java-1.8-openjdk
 
 EXPOSE 25565
 

@@ -2,8 +2,6 @@
 
 set -euo pipefail
 
-export JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk
-
 function run_minecraft {
     if [ "$MC_VANILLA" = true ]; then
         ${JAVA_HOME}/bin/java -jar -Xms"${JAVA_MAX_MEM}" -Xmx"${JAVA_MAX_MEM}"  ${MINECRAFT_HOME}/minecraft_server."${MC_VERSION}".jar

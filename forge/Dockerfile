@@ -34,7 +34,7 @@ RUN apk update && apk upgrade \
     && apk add openjdk8 wget curl bash
 
 RUN mkdir ${MINECRAFT_HOME} \
-    && cd ${MINECRAFT_HOME} && wget https://files.minecraftforge.net/maven/net/minecraftforge/forge/"${MC_VERSION}"-"${FORGE_VERSION}"/forge-"${MC_VERSION}"-"${FORGE_VERSION}"-installer.jar \
+    && cd ${MINECRAFT_HOME} && wget https://files.minecraftforge.net/maven/net/minecraftforge/forge/"${MC_VERSION}"-"${FORGE_VERSION}"-"${MC_VERSION}"/forge-"${MC_VERSION}"-"${FORGE_VERSION}"-"${MC_VERSION}"-installer.jar -O forge-"${MC_VERSION}"-"${FORGE_VERSION}"-installer.jar \
     && java -jar forge-"${MC_VERSION}"-"${FORGE_VERSION}"-installer.jar --installServer \
     && echo "eula=true" > eula.txt \
     && mkdir -p ${MINECRAFT_HOME}/data ${MINECRAFT_HOME}/mods ${MINECRAFT_HOME}/world

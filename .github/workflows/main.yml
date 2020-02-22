@@ -16,16 +16,16 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build Vanilla image
-      run: make build
+      run: ./gradlew buildAllVanilla
     - name: Build Forge image
-      run: make build_forge
+      run: ./gradlew buildAllForge
     - name: Push Vanilla image
       env:
         DOCKER_USERNAME: ${{ secrets.dockerUsername }}
         DOCKER_TOKEN: ${{ secrets.dockerToken }}
-      run: make push
+      run: ./gradlew pushAllVanilla
     - name: Push Forge image
       env:
         DOCKER_USERNAME: ${{ secrets.dockerUsername }}
         DOCKER_TOKEN: ${{ secrets.dockerToken }}
-      run: make push_forge
+      run: ./gradlew pushAllForge

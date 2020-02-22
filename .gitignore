@@ -8,6 +8,7 @@ data_forge/
 world_forge/
 world*/
 mods*/
+.idea/
 
 # Files
 test.sh

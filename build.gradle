@@ -25,7 +25,10 @@ ext {
   ]
   forgeDirectories = ['data_forge', 'mods', 'world_forge']
   forgeVersions = [
-          '1.12.2': '14.23.5.2772'
+          '1.12.2': '14.23.5.2772',
+          '1.13.2': '25.0.219',
+          '1.14.4': '28.2.1',
+          '1.15.2': '31.1.14'
   ]
   port = "25565"
   latestTag = "${qname}:latest"
@@ -114,23 +117,41 @@ task stop(type: ShellExec) {
 }
 
 vanillaVersions.keySet().toArray().each {  mcVersion ->
-  tasks.create(name: "buildVanilla${mcVersion}", type: ShellExec) {
-    command """
+  if (mcVersion == vanillaVersions.keySet().toArray().last()) {
+    tasks.create(name: "buildVanilla${mcVersion}", type: ShellExec) {
+      command """
         docker build \
 		--file vanilla/Dockerfile \
 		--build-arg mc_version=${mcVersion} \
 		--build-arg mc_url_link=${vanillaVersions.get(mcVersion)} \
         -t ${qname}:${mcVersion} \
 		-t ${latestTag} ."""
+    }
+  } else  {
+    tasks.create(name: "buildVanilla${mcVersion}", type: ShellExec) {
+      command """
+        docker build \
+		--file vanilla/Dockerfile \
+		--build-arg mc_version=${mcVersion} \
+		--build-arg mc_url_link=${vanillaVersions.get(mcVersion)} \
+        -t ${qname}:${mcVersion} ."""
+    }
   }
 }
 
 vanillaVersions.keySet().toArray().each {  mcVersion ->
-  tasks.create(name: "pushVanilla${mcVersion}", type: ShellExec) {
-    command """
+  if (mcVersion == vanillaVersions.keySet().toArray().last()) {
+    tasks.create(name: "pushVanilla${mcVersion}", type: ShellExec) {
+      command """
         docker push ${qname}:${mcVersion}
 		docker push ${latestTag}"""
-    dependsOn dockerLogin
+      dependsOn dockerLogin
+    }
+  } else {
+    tasks.create(name: "pushVanilla${mcVersion}", type: ShellExec) {
+      command "echo docker push ${qname}:${mcVersion}"
+      dependsOn dockerLogin
+    }
   }
 }
 
@@ -139,23 +160,41 @@ task buildAllVanilla(dependsOn: tasks.matching { Task task -> task.name.startsWi
 task pushAllVanilla(dependsOn: tasks.matching { Task task -> task.name.startsWith("pushVanilla")})
 
 forgeVersions.keySet().toArray().each {  mcVersion ->
-  tasks.create(name: "buildForge${mcVersion}", type: ShellExec) {
-    command """
+  if (mcVersion == forgeVersions.keySet().toArray().last()) {
+    tasks.create(name: "buildForge${mcVersion}", type: ShellExec) {
+      command """
         docker build \
 		--file forge/Dockerfile \
 		--build-arg mc_version=${mcVersion} \
         --build-arg forge_version=${forgeVersions.get(mcVersion)} \
         -t ${qname}:forge-${mcVersion} \
 		-t ${latestTagForge} ."""
+    }
+  } else {
+    tasks.create(name: "buildForge${mcVersion}", type: ShellExec) {
+      command """
+        docker build \
+		--file forge/Dockerfile \
+		--build-arg mc_version=${mcVersion} \
+        --build-arg forge_version=${forgeVersions.get(mcVersion)} \
+        -t ${qname}:forge-${mcVersion} ."""
+    }
   }
 }
 
-vanillaVersions.keySet().toArray().each {  mcVersion ->
-  tasks.create(name: "pushForge${mcVersion}", type: ShellExec) {
-    command """
+forgeVersions.keySet().toArray().each {  mcVersion ->
+  if (mcVersion == forgeVersions.keySet().toArray().last()) {
+    tasks.create(name: "pushForge${mcVersion}", type: ShellExec) {
+      command """
         docker push ${qname}:forge-${mcVersion}
 		docker push ${latestTagForge}"""
-    dependsOn dockerLogin
+      dependsOn dockerLogin
+    }
+  } else {
+    tasks.create(name: "pushForge${mcVersion}", type: ShellExec) {
+      command "docker push ${qname}:forge-${mcVersion}"
+      dependsOn dockerLogin
+    }
   }
 }
 

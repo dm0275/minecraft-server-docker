@@ -42,10 +42,10 @@ RUN mkdir ${MINECRAFT_HOME} \
 COPY files/server.properties ${MINECRAFT_HOME}/server.properties
 COPY files/start-minecraft.sh ${MINECRAFT_HOME}/
 
-VOLUME ["${MINECRAFT_HOME}/data", "${MINECRAFT_HOME}/mods", "${MINECRAFT_HOME}/world"]
-
 RUN chown -R "${MC_USER}":"${MC_USER}" ${MINECRAFT_HOME} 
 WORKDIR ${MINECRAFT_HOME}
+
+VOLUME ["${MINECRAFT_HOME}/data", "${MINECRAFT_HOME}/mods", "${MINECRAFT_HOME}/world"]
 
 COPY files/entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]

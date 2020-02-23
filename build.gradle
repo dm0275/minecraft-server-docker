@@ -25,7 +25,6 @@ ext {
   ]
   forgeDirectories = ['data_forge', 'mods', 'world_forge']
   forgeVersions = [
-          '1.12.2': '14.23.5.2772',
           '1.13.2': '25.0.219',
           '1.14.4': '28.2.1',
           '1.15.2': '31.1.14'

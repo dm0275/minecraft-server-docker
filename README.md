@@ -9,15 +9,47 @@ This project builds a Minecraft (Vanilla or Forge) server Docker image.
 * Docker-compose
 
 ## Configurable Settings (via environment variables)
-|Setting          |Default Value          |Notes|
-|---              |---                    |---|
-|JAVA_MIN_MEM     |1G                     ||
-|JAVA_MAX_MEM     |2G                     ||
-|GAMEMODE         |0                      |See notes on acceptable values|
-|MAXPLAYERS       |20                     ||
-|DIFFICULTY       |1                      |See notes on acceptable values|
-|MOTD             |Docker Minecraft Server|Message to be displayed in the server list of players. |
-|ENABLE_CMD_BLOCK |N/A                    ||
+|Setting                      |Default Value          |Notes|
+|---                          |---                    |---|
+|JAVA_MIN_MEM                 |1G                     ||
+|JAVA_MAX_MEM                 |2G                     ||
+|GAMEMODE                     |0                      |See notes on acceptable values|
+|MAXPLAYERS                   |20                     ||
+|DIFFICULTY                   |1                      |See notes on acceptable values|
+|MOTD                         |Docker Minecraft Server|Message to be displayed in the server list of players. |
+|ENABLE_CMD_BLOCK             |null                   ||
+|MAX_TICK_TIME                |60000                  ||
+|GENERATOR_SETTINGS           |null                   ||
+|ALLOW_NETHER                 |true                   ||
+|FORCE_GAMEMODE               |false                  ||
+|ENABLE_QUERY                 |false                  ||
+|PLAYER_IDLE_TIMEOUT          |0                      ||
+|SPAWN_MONSTERS               |true                   ||
+|OP_PERMISSION_LEVEL          |4                      ||
+|PVP                          |true                   ||
+|SNOOPER_ENABLED              |true                   ||
+|LEVEL_TYPE                   |DEFAULT                ||
+|HARDCORE                     |false                  ||
+|NETWORK_COMPRESSION_THRESHOLD|256                    ||
+|RESOURCE_PACK_SHA1           |null                   ||
+|MAX_WORLD_SIZE               |29999984               ||
+|SERVER_PORT                  |25565                  ||
+|SERVER_IP                    |null                   ||
+|SPAWN_NPCS                   |true                   ||
+|ALLOW_FLIGHT                 |false                  ||
+|LEVEL_NAME                   |world                  ||
+|VIEW_DISTANCE                |10                     ||
+|RESOURCE_PACK                |null                   ||
+|SPAWN_ANIMALS                |true                   ||
+|WHITE_LIST                   |false                  ||
+|GENERATE_STRUCTURES          |true                   ||
+|ONLINE_MODE                  |true                   ||
+|MAX_BUILD_HEIGHT             |256                    ||
+|LEVEL_SEED                   |null                   ||
+|PREVENT_PROXY_CONNECTIONS    |false                  ||
+|USE_NATIVE_TRANSPORT         |true                   ||
+|ENABLE_RCON                  |false                  ||
+
 
 _Gamemode: Survival mode is gametype=0, Creative is gametype=1, Adventure is gametype=2, and Spectator is gametype=3_
 

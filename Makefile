@@ -6,7 +6,7 @@ MC_12=1.12.2
 MC_14=1.14.4
 
 FORGE_12=12.18.3.2511 ## Minecraft v1.10.2
-FORGE_14=14.23.5.2772  ## Minecraft v1.12.2
+FORGE_14=14.23.5.2847  ## Minecraft v1.12.2
 
 MC_14_URL=https://launcher.mojang.com/v1/objects/3dc3d84a581f14691199cf6831b71ed1296a9fdf/server.jar
 

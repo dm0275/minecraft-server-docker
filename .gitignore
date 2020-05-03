@@ -5,7 +5,8 @@ mods
 world
 matt_dad_world/
 data_forge/
-world_forge/
+world_forge
+world_forge/*
 best_world_bk/
 world*/
 mods*/

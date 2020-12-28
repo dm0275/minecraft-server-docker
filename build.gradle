@@ -69,6 +69,8 @@ task dockerLogin(type: Exec) {
 }
 
 task setup {
+  group "Mincraft"
+  description "Setup the Minecraft directories"
   doLast {
     vanillaDirectories.forEach { dir ->
       mkdir(dir)
@@ -77,6 +79,8 @@ task setup {
 }
 
 task setupForge {
+  group "Mincraft"
+  description "Setup the Minecraft (forge) directories"
   doLast {
     forgeDirectories.forEach { dir ->
       mkdir(dir)
@@ -101,21 +105,29 @@ task cleanDirsForge(type: Delete) {
 }
 
 task run(type: Exec) {
+  group "Mincraft"
+  description "Run the latest Minecraft server image"
   dependsOn setup
   commandLine "bash", "-c", "${envVars} && docker-compose up"
 }
 
 task runBackground(type: Exec) {
+  group "Mincraft"
+  description "Run the latest Minecraft server image (daemonized)"
   dependsOn setup
   commandLine "bash", "-c", "${envVars} && docker-compose up -d"
 }
 
 task runForge(type: Exec) {
+  group "Mincraft"
+  description "Run the latest Forge Minecraft server image"
   dependsOn setupForge
   commandLine "bash", "-c", "${envVarsForge} && docker-compose up"
 }
 
 task runBackgroundForge(type: Exec) {
+  group "Mincraft"
+  description "Run the latest Forge Minecraft server image (daemonized)"
   dependsOn setupForge
   commandLine "bash", "-c", "${envVarsForge} && docker-compose up -d"
 }
@@ -131,6 +143,8 @@ vanillaVersions.keySet().each { version ->
             --build-arg mc_url_link=${vanillaVersions.get(version)['url']} \
             -t ${qname}:${version}"""
   tasks.create(name: "buildVanilla${version}", type: Exec) {
+    group "Mincraft"
+    description "Build Minecraft server v${version} image"
     if (version == vanillaVersions.keySet().last()) {
       commandLine "${buildCmd} -t ${latestTag} .".tokenize()
     } else {
@@ -139,6 +153,8 @@ vanillaVersions.keySet().each { version ->
   }
 
   tasks.create(name: "pushVanilla${version}", dependsOn: dockerLogin, type: Exec) {
+    group "Mincraft"
+    description "Push Minecraft server v${version} image"
     if (version == vanillaVersions.keySet().last()) {
       commandLine "bash", "-c", """docker push ${qname}:${version} \
             && docker push ${latestTag}"""
@@ -159,6 +175,8 @@ forgeVersions.keySet().toArray().each {  version ->
         --build-arg forge_version=${forgeVersions.get(version)['forgeVersion']} \
         -t ${qname}:forge-${version}"""
   tasks.create(name: "buildForge${version}", type: Exec) {
+    group "Mincraft"
+    description "Build Forge Minecraft server v${version} image (forge v${forgeVersions.get(version)['forgeVersion']})"
     if (version == forgeVersions.keySet().toArray().last()) {
       commandLine "${buildCmd} -t ${latestTagForge} .".tokenize()
     } else {
@@ -167,6 +185,8 @@ forgeVersions.keySet().toArray().each {  version ->
   }
 
   tasks.create(name: "pushForge${version}", dependsOn: dockerLogin, type: Exec) {
+    group "Mincraft"
+    description "Push Forge Minecraft server v${version} image"
     if (version == forgeVersions.keySet().toArray().last()) {
       commandLine "bash", "-c", """docker push ${qname}:forge-${version} \
             && docker push ${latestTagForge}"""
@@ -176,6 +196,12 @@ forgeVersions.keySet().toArray().each {  version ->
   }
 }
 
-task buildAllForge(dependsOn: tasks.matching { Task task -> task.name.startsWith("buildForge")})
+task buildAllForge(dependsOn: tasks.matching { Task task -> task.name.startsWith("buildForge")}) {
+  group "Mincraft"
+  description "Build All Minecraft server images"
+}
 
-task pushAllForge(dependsOn: tasks.matching { Task task -> task.name.startsWith("pushForge")})
+task pushAllForge(dependsOn: tasks.matching { Task task -> task.name.startsWith("pushForge")}) {
+  group "Mincraft"
+  description "Build All Forge Minecraft server images"
+}

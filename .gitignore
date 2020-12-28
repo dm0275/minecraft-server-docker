@@ -11,6 +11,7 @@ best_world_bk/
 world*/
 mods*/
 .idea/
+.gradle/
 
 # Files
 test.sh

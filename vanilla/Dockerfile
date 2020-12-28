@@ -7,15 +7,15 @@ ARG mc_vanilla
 ARG mc_version
 ARG mc_url_link
 
-ENV JAVA_MIN_MEM        1G
-ENV JAVA_MAX_MEM        2G
-ENV MC_USER             minecraft
-ENV MC_USER_ID          1000
-ENV MC_VERSION          ${mc_version}
-ENV MC_VANILLA          true
-ENV MC_URL_LINK         ${mc_url_link}
-ENV MINECRAFT_HOME      /opt/minecraft
-ENV JAVA_HOME           /usr/lib/jvm/java-1.8-openjdk
+ENV JAVA_MIN_MEM=1G \
+    JAVA_MAX_MEM=2G \
+    MC_USER=minecraft \
+    MC_USER_ID=1000 \
+    MC_VERSION=${mc_version} \
+    MC_VANILLA=true \
+    MC_URL_LINK=${mc_url_link} \
+    MINECRAFT_HOME=/opt/minecraft \
+    JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk
 
 EXPOSE 25565
 

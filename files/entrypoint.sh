@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -ex
+
 if [ "$2" == 'start-minecraft.sh' ]; then
 
   if [ "$GAMEMODE" != '' ]; then

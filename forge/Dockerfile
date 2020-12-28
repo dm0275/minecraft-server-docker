@@ -6,15 +6,15 @@ FROM alpine:3.9
 ARG mc_version
 ARG forge_version
 
-ENV JAVA_MIN_MEM        1G
-ENV JAVA_MAX_MEM        2G
-ENV MC_USER             minecraft
-ENV MC_USER_ID          1000
-ENV MC_VANILLA          false
-ENV MC_VERSION          ${mc_version}
-ENV FORGE_VERSION       ${forge_version}
-ENV MINECRAFT_HOME      /opt/minecraft
-ENV JAVA_HOME           /usr/lib/jvm/java-1.8-openjdk
+ENV JAVA_MIN_MEM=1G \
+    JAVA_MAX_MEM=2G \
+    MC_USER=minecraft \
+    MC_USER_ID=1000 \
+    MC_VANILLA=false \
+    MC_VERSION=${mc_version} \
+    FORGE_VERSION=${forge_version} \
+    MINECRAFT_HOME=/opt/minecraft \
+    JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk
 
 EXPOSE 25565
 

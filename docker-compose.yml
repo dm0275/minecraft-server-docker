@@ -10,7 +10,6 @@ services:
       - "$PORT:25565"
     volumes:
       - $WORLD_DIR:/opt/minecraft/world
-      - $DATA_DIR:/opt/minecraft/data
       - $MODS_DIR:/opt/minecraft/mods
     environment:
       - GAMEMODE

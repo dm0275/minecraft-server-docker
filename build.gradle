@@ -11,7 +11,8 @@ buildscript {
 
 ext {
   qname = "dm0275/minecraft-server"
-  vanillaDirectories = ['data', 'mods', 'world']
+  worldName = System.getenv("WORLD") ?: "world"
+  vanillaDirectories = ["data/$worldName", "mods"]
   vanillaVersions = [
       '1.13.2': [
           'url': 'https://launcher.mojang.com/v1/objects/3737db93722a9e39eeada7c27e7aca28b144ffa7/server.jar'
@@ -26,7 +27,7 @@ ext {
           'url': 'https://launcher.mojang.com/v1/objects/35139deedbd5182953cf1caa23835da59ca3d7cd/server.jar'
       ]
   ]
-  forgeDirectories = ['data_forge', 'mods', 'world_forge']
+  forgeDirectories = ["data_forge/$worldName", "mods"]
   forgeVersions = [
       '1.13.2': [
           'forgeVersion': '25.0.219'
@@ -50,8 +51,7 @@ ext {
     JAVA_MAX_MEM=3G \
     GAMEMODE=1 \
     MAX_PLAYERS=10 \
-    DATA_DIR=\$PWD/data \
-    WORLD_DIR=\$PWD/world \
+    WORLD_DIR=\$PWD/data/${worldName} \
     MODS_DIR=\$PWD/mods"""
   envVarsForge = """export MC_IMAGE=${qname}:${forgeVersions.keySet().last()} \
     PORT=${port} \
@@ -59,8 +59,7 @@ ext {
     JAVA_MAX_MEM=3G \
     GAMEMODE=1 \
     MAX_PLAYERS=10 \
-    DATA_DIR=\$PWD/data_forge \
-    WORLD_DIR=\$PWD/world_forge \
+    WORLD_DIR=\$PWD/data_forge/${worldName} \
     MODS_DIR=\$PWD/mods"""
 }
 

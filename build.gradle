@@ -45,20 +45,17 @@ ext {
   port = "25565"
   latestTag = "${qname}:latest"
   latestTagForge = "${qname}:latest-forge"
-  envVars = """export MC_IMAGE=${qname}:${vanillaVersions.keySet().last()} \
+  minecraftVersion = System.getenv("MC_VERSION") ?: "latest"
+  envVars = """export MC_IMAGE=${qname}:${minecraftVersion} \
     PORT=${port} \
     JAVA_MIN_MEM=3G \
     JAVA_MAX_MEM=3G \
-    GAMEMODE=1 \
-    MAX_PLAYERS=10 \
     WORLD_DIR=\$PWD/data/${worldName}/world \
     MODS_DIR=\$PWD/data/${worldName}/mods"""
-  envVarsForge = """export MC_IMAGE=${qname}:${forgeVersions.keySet().last()} \
+  envVarsForge = """export MC_IMAGE=${qname}:${minecraftVersion} \
     PORT=${port} \
     JAVA_MIN_MEM=3G \
     JAVA_MAX_MEM=3G \
-    GAMEMODE=1 \
-    MAX_PLAYERS=10 \
     WORLD_DIR=\$PWD/data_forge/${worldName}/world \
     MODS_DIR=\$PWD/data_forge/${worldName}/mods"""
 }

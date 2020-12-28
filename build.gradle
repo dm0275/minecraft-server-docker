@@ -12,7 +12,7 @@ buildscript {
 ext {
   qname = "dm0275/minecraft-server"
   worldName = System.getenv("WORLD") ?: "world"
-  vanillaDirectories = ["data/$worldName", "mods"]
+  vanillaDirectories = ["data/$worldName/world", "data/$worldName/mods"]
   vanillaVersions = [
       '1.13.2': [
           'url': 'https://launcher.mojang.com/v1/objects/3737db93722a9e39eeada7c27e7aca28b144ffa7/server.jar'
@@ -27,7 +27,7 @@ ext {
           'url': 'https://launcher.mojang.com/v1/objects/35139deedbd5182953cf1caa23835da59ca3d7cd/server.jar'
       ]
   ]
-  forgeDirectories = ["data_forge/$worldName", "mods"]
+  forgeDirectories = ["data_forge/$worldName/world", "data_forge/$worldName/mods"]
   forgeVersions = [
       '1.13.2': [
           'forgeVersion': '25.0.219'
@@ -51,16 +51,16 @@ ext {
     JAVA_MAX_MEM=3G \
     GAMEMODE=1 \
     MAX_PLAYERS=10 \
-    WORLD_DIR=\$PWD/data/${worldName} \
-    MODS_DIR=\$PWD/mods"""
+    WORLD_DIR=\$PWD/data/${worldName}/world \
+    MODS_DIR=\$PWD/data/${worldName}/mods"""
   envVarsForge = """export MC_IMAGE=${qname}:${forgeVersions.keySet().last()} \
     PORT=${port} \
     JAVA_MIN_MEM=3G \
     JAVA_MAX_MEM=3G \
     GAMEMODE=1 \
     MAX_PLAYERS=10 \
-    WORLD_DIR=\$PWD/data_forge/${worldName} \
-    MODS_DIR=\$PWD/mods"""
+    WORLD_DIR=\$PWD/data_forge/${worldName}/world \
+    MODS_DIR=\$PWD/data_forge/${worldName}/mods"""
 }
 
 task dockerLogin(type: Exec) {
@@ -168,10 +168,10 @@ forgeVersions.keySet().toArray().each {  version ->
 
   tasks.create(name: "pushForge${version}", dependsOn: dockerLogin, type: Exec) {
     if (version == forgeVersions.keySet().toArray().last()) {
-      commandLine "bash", "-c", """docker push forge-${qname}:${version} \
+      commandLine "bash", "-c", """docker push ${qname}:forge-${version} \
             && docker push ${latestTagForge}"""
     } else {
-      commandLine "docker push forge-${qname}:${version}".tokenize()
+      commandLine "docker push ${qname}:forge-${version}".tokenize()
     }
   }
 }

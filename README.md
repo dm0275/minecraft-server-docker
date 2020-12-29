@@ -62,22 +62,36 @@ docker run --rm -d -e JAVA_MIN_MEM=3G -e JAVA_MAX_MEM=3G \
     -v $WORLD_DIR:/opt/minecraft/world -v $MODS_DIR:/opt/minecraft/mods -p 25565:25565
     dm0275/minecraft-server:latest
 ```
-Or via Make
+Or via Gradle
 ```
-Usage: make <target>
-  build       Build Vanilla image
-  build_forge  Build image
-  login       Login
-  setup       Create DIRs
-  run         Run Minecraft in foreground
-  rund        Run Minecraft in the background
-  stop        Stop Container
-  clean       Clean Containers
-  setup_forge  Create Forge DIRs
-  run_forge   Run Minecraft Forge in foreground
-  rund_forge  Run Minecraft Forge in the background
-  stop_forge  Stop Container
-  clean_forge  Clean Containers
-  clean-dirs  Clean DIRs
-  help        This help dialog.
+./gradlew run
+```
+Additionally, the following tasks are available to build and run Minecraft:
+```
+Mincraft tasks
+--------------
+buildAllForge - Build All Minecraft server images
+buildForge1.13.2 - Build Forge Minecraft server v1.13.2 image (forge v25.0.219)
+buildForge1.14.4 - Build Forge Minecraft server v1.14.4 image (forge v28.2.1)
+buildForge1.15.2 - Build Forge Minecraft server v1.15.2 image (forge v31.2.0)
+buildForge1.16.4 - Build Forge Minecraft server v1.16.4 image (forge v35.1.4)
+buildVanilla1.13.2 - Build Minecraft server v1.13.2 image
+buildVanilla1.14.4 - Build Minecraft server v1.14.4 image
+buildVanilla1.15.2 - Build Minecraft server v1.15.2 image
+buildVanilla1.16.4 - Build Minecraft server v1.16.4 image
+pushAllForge - Build All Forge Minecraft server images
+pushForge1.13.2 - Push Forge Minecraft server v1.13.2 image
+pushForge1.14.4 - Push Forge Minecraft server v1.14.4 image
+pushForge1.15.2 - Push Forge Minecraft server v1.15.2 image
+pushForge1.16.4 - Push Forge Minecraft server v1.16.4 image
+pushVanilla1.13.2 - Push Minecraft server v1.13.2 image
+pushVanilla1.14.4 - Push Minecraft server v1.14.4 image
+pushVanilla1.15.2 - Push Minecraft server v1.15.2 image
+pushVanilla1.16.4 - Push Minecraft server v1.16.4 image
+run - Run the latest Minecraft server image
+runBackground - Run the latest Minecraft server image (daemonized)
+runBackgroundForge - Run the latest Forge Minecraft server image (daemonized)
+runForge - Run the latest Forge Minecraft server image
+setup - Setup the Minecraft directories
+setupForge - Setup the Minecraft (forge) directories
 ```

@@ -5,7 +5,7 @@ services:
     tty: true
     stdin_open: true
     image: "$MC_IMAGE"
-    container_name: minecraft
+    container_name: "$WORLD-minecraft"
     ports:
       - "$PORT:25565"
     volumes:
@@ -14,6 +14,24 @@ services:
     environment:
       - GAMEMODE
       - MAX_PLAYERS
+      - DIFFICULTY
+      - MOTD
+      - ENABLE_CMD_BLOCK
+      - MAX_TICK_TIME
+      - GENERATOR_SETTINGS
+      - ALLOW_NETHER
+      - FORCE_GAMEMODE
+      - ENABLE_QUERY
+      - PLAYER_IDLE_TIMEOUT
+      - SPAWN_MONSTERS
+      - OP_PERMISSION_LEVEL
+      - PVP
+      - LEVEL_TYPE
+      - HARDCORE
+      - NETWORK_COMPRESSION_THRESHOLD
+      - RESOURCE_PACK_SHA1
+      - MAX_WORLD_SIZE
+      - LEVEL_SEED
 volumes:
   world: {}
   data: {}

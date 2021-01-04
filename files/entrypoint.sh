@@ -47,8 +47,8 @@ if [ "$2" == 'start-minecraft.sh' ]; then
   fi
 
 
-  if [ "$FORRCE_GAMEMODE" != '' ]; then
-    sed -e "s|force-gamemode.*|force-gamemode=$FORRCE_GAMEMODE|g" \
+  if [ "$FORCE_GAMEMODE" != '' ]; then
+    sed -e "s|force-gamemode.*|force-gamemode=$FORCE_GAMEMODE|g" \
      -i "${MINECRAFT_HOME}/server.properties"
   fi
 
@@ -97,12 +97,6 @@ if [ "$2" == 'start-minecraft.sh' ]; then
 
   if [ "$HARDCORE" != '' ]; then
     sed -e "s|hardcore.*|hardcore=$HARDCORE|g" \
-     -i "${MINECRAFT_HOME}/server.properties"
-  fi
-
-
-  if [ "$ENABLE_COMMAND_BLOCK" != '' ]; then
-    sed -e "s|enable-command-block.*|enable-command-block=$ENABLE_COMMAND_BLOCK|g" \
      -i "${MINECRAFT_HOME}/server.properties"
   fi
 

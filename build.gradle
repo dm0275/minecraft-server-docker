@@ -41,8 +41,8 @@ ext {
       '1.15.2': [
           'forgeVersion': '31.2.0'
       ],
-      '1.16.4': [
-          'forgeVersion': '35.1.4'
+      '1.16.5': [
+          'forgeVersion': '36.2.0'
       ]
   ]
   port = System.getenv("MC_PORT") ?:"25565"

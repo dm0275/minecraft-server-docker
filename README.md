@@ -5,7 +5,7 @@ This project builds a Minecraft (Vanilla or Forge) server Docker image.
 
 ## Requirements
 * Docker
-* Make
+* Gradle
 * Docker-compose
 
 ## Configurable Settings (via environment variables)

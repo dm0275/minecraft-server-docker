@@ -32,6 +32,9 @@ ext {
       '1.18.1': [
           'url': 'https://launcher.mojang.com/v1/objects/125e5adf40c659fd3bce3e66e67a16bb49ecc1b9/server.jar'
       ],
+      '1.19.3': [
+          'url': 'https://launcher.mojang.com/v1/objects/c9df48efed58511cdd0213c56b9013a7b5c9ac1f/server.jar'
+      ],
   ]
   forgeDirectories = ["data_forge/$worldName/world", "data_forge/$worldName/mods"]
   forgeVersions = [
@@ -49,7 +52,10 @@ ext {
       ],
       '1.16.5': [
           'forgeVersion': '36.2.20'
-      ]
+      ],
+      '1.19.3': [
+          'forgeVersion': '44.1.0'
+      ],
   ]
   port = System.getenv("MC_PORT") ?:"25565"
   latestTag = "${qname}:latest"

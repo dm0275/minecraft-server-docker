@@ -32,6 +32,9 @@ ext {
       '1.18.1': [
           'url': 'https://launcher.mojang.com/v1/objects/125e5adf40c659fd3bce3e66e67a16bb49ecc1b9/server.jar'
       ],
+      '1.19.2': [
+          'url': 'https://piston-data.mojang.com/v1/objects/f69c284232d7c7580bd89a5a4931c3581eae1378/server.jar'
+      ],
       '1.19.3': [
           'url': 'https://launcher.mojang.com/v1/objects/c9df48efed58511cdd0213c56b9013a7b5c9ac1f/server.jar'
       ],
@@ -52,6 +55,9 @@ ext {
       ],
       '1.16.5': [
           'forgeVersion': '36.2.20'
+      ],
+      '1.19.2': [
+          'forgeVersion': '43.3.0'
       ],
       '1.19.3': [
           'forgeVersion': '44.1.0'

@@ -1,4 +1,4 @@
-FROM alpine:3.9
+FROM ubuntu:22.04
 
 #-------------------------------------------------------------------------------
 #  Environment Variables
@@ -6,6 +6,7 @@ FROM alpine:3.9
 ARG mc_vanilla
 ARG mc_version
 ARG mc_url_link
+ARG java_version
 
 ENV JAVA_MIN_MEM=1G \
     JAVA_MAX_MEM=2G \
@@ -15,24 +16,24 @@ ENV JAVA_MIN_MEM=1G \
     MC_VANILLA=true \
     MC_URL_LINK=${mc_url_link} \
     MINECRAFT_HOME=/opt/minecraft \
-    JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk
+    JAVA_HOME=/usr/lib/jvm/java-${java_version}-openjdk-amd64
 
 EXPOSE 25565
 
 #-------------------------------------------------------------------------------
 #  Add Minecraft user
 #-------------------------------------------------------------------------------
-RUN addgroup -g "$MC_USER_ID" "$MC_USER" \
-    && adduser \
-    -D -G "$MC_USER" \
+RUN groupadd -g "$MC_USER_ID" "$MC_USER" \
+    && useradd \
+    -g "$MC_USER_ID" \
     -u "$MC_USER_ID" \
     "$MC_USER"
 
 #-------------------------------------------------------------------------------
 #  Download and configure Minecraft/Forge
 #-------------------------------------------------------------------------------
-RUN apk update && apk upgrade \
-    && apk add openjdk8 wget curl bash
+RUN apt update \
+    && apt install -y wget openjdk-${java_version}-jdk
 
 RUN mkdir ${MINECRAFT_HOME} \
     && cd ${MINECRAFT_HOME} && wget "${MC_URL_LINK}" -O minecraft_server."${MC_VERSION}".jar \

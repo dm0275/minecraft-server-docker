@@ -180,6 +180,7 @@ vanillaVersions.keySet().each { version ->
             --file vanilla/Dockerfile \
             --build-arg mc_version=${version} \
             --build-arg mc_url_link=${vanillaVersions.get(version)['url']} \
+            --build-arg java_version=${vanillaVersions.get(version)['javaVersion']} \
             -t ${qname}:${version}"""
   tasks.create(name: "buildVanilla${version}", type: Exec) {
     group "Mincraft"

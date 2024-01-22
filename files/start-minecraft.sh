@@ -6,7 +6,11 @@ function run_minecraft {
     if [ "$MC_VANILLA" = true ]; then
         ${JAVA_HOME}/bin/java -jar -Xms"${JAVA_MAX_MEM}" -Xmx"${JAVA_MAX_MEM}"  ${MINECRAFT_HOME}/minecraft_server."${MC_VERSION}".jar
     elif [ "$MC_VANILLA" = false ]; then
-        ${JAVA_HOME}/bin/java -jar -Xms"${JAVA_MAX_MEM}" -Xmx"${JAVA_MAX_MEM}"  ${MINECRAFT_HOME}/forge-"${MC_VERSION}"-"${FORGE_VERSION}".jar
+        if [ -f "${MINECRAFT_HOME}/run.sh" ]; then
+            ${MINECRAFT_HOME}/run.sh
+        else
+            ${JAVA_HOME}/bin/java -jar -Xms"${JAVA_MAX_MEM}" -Xmx"${JAVA_MAX_MEM}"  ${MINECRAFT_HOME}/forge-"${MC_VERSION}"-"${FORGE_VERSION}".jar
+        fi
     else
         echo "Unknown Minecraft configuration, check the \$MC_VANILLA build arg"
     fi

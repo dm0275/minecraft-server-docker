@@ -42,25 +42,36 @@ ext {
   forgeDirectories = ["data_forge/$worldName/world", "data_forge/$worldName/mods"]
   forgeVersions = [
       '1.12.2': [
+          'javaVersion': '8',
           'forgeVersion': '14.23.5.2859'
       ],
       '1.13.2': [
+          'javaVersion': '8',
           'forgeVersion': '25.0.223'
       ],
       '1.14.4': [
+          'javaVersion': '8',
           'forgeVersion': '28.2.26'
       ],
       '1.15.2': [
+          'javaVersion': '8',
           'forgeVersion': '31.2.57'
       ],
       '1.16.5': [
+          'javaVersion': '8',
           'forgeVersion': '36.2.20'
       ],
       '1.19.2': [
+          'javaVersion': '17',
           'forgeVersion': '43.3.0'
       ],
       '1.19.3': [
+          'javaVersion': '17',
           'forgeVersion': '44.1.0'
+      ],
+      '1.20.4': [
+          'javaVersion': '17',
+          'forgeVersion': '49.0.22'
       ],
   ]
   port = System.getenv("MC_PORT") ?:"25565"
@@ -193,6 +204,7 @@ forgeVersions.keySet().toArray().each {  version ->
         --file forge/Dockerfile \
         --build-arg mc_version=${version} \
         --build-arg forge_version=${forgeVersions.get(version)['forgeVersion']} \
+        --build-arg java_version=${forgeVersions.get(version)['javaVersion']} \
         -t ${qname}:forge-${version}"""
   tasks.create(name: "buildForge${version}", type: Exec) {
     group "Mincraft"

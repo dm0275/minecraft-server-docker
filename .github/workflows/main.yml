@@ -17,13 +17,3 @@ jobs:
       run: ./gradlew buildAllVanilla
     - name: Build Forge image
       run: ./gradlew buildAllForge
-    - name: Push Vanilla image
-      env:
-        DOCKER_USERNAME: ${{ secrets.dockerUsername }}
-        DOCKER_TOKEN: ${{ secrets.dockerToken }}
-      run: ./gradlew pushAllVanilla
-    - name: Push Forge image
-      env:
-        DOCKER_USERNAME: ${{ secrets.dockerUsername }}
-        DOCKER_TOKEN: ${{ secrets.dockerToken }}
-      run: ./gradlew pushAllForge

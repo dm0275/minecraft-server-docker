@@ -12,6 +12,7 @@ world*/
 mods*/
 .idea/
 .gradle/
+vendor/
 
 # Files
 test.sh

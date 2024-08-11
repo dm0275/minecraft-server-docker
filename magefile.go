@@ -10,7 +10,15 @@ import (
 )
 
 // A build step that requires additional params, or platform specific steps for example
-func Run() error {
+func Run(version string) error {
 	fmt.Println("Building...")
-	return sh.Run("echo", "build", "-o", "MyApp", ".")
+	return run(fmt.Sprintf("echo version %s", version))
+}
+
+func run(cmd string) error {
+	output, err := sh.Output("bash", "-c", cmd)
+	// Print output
+	fmt.Println(output)
+
+	return err
 }

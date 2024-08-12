@@ -69,6 +69,10 @@ ext {
           'javaVersion': '8',
           'forgeVersion': '36.2.42'
       ],
+      '1.18.2': [
+          'javaVersion': '17',
+          'forgeVersion': '40.2.21'
+      ],
       '1.19.2': [
           'javaVersion': '17',
           'forgeVersion': '43.3.0'
@@ -85,11 +89,13 @@ ext {
   port = System.getenv("MC_PORT") ?:"25565"
   latestTag = "${qname}:latest"
   latestTagForge = "${qname}:forge-latest"
+  minMemory = System.getenv("JAVA_MIN_MEM") ?: "3G"
+  maxMemory = System.getenv("JAVA_MAX_MEM") ?: "3G"
   minecraftVersion = System.getenv("MC_VERSION") ?: "latest"
   envVars = """export MC_IMAGE=${qname}:${minecraftVersion} \
     PORT=${port} \
-    JAVA_MIN_MEM=3G \
-    JAVA_MAX_MEM=3G \
+    JAVA_MIN_MEM=${minMemory} \
+    JAVA_MAX_MEM=${maxMemory} \
     WORLD_DIR=\$PWD/data/${worldName}/world \
     MODS_DIR=\$PWD/data/${worldName}/mods"""
   envVarsForge = """export MC_IMAGE=${qname}:forge-${minecraftVersion} \

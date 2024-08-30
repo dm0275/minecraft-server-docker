@@ -235,7 +235,11 @@ task setupDockerBuilder() {
 }
 
 task buildAllVanilla() {
-  dependsOn tasks.matching { Task task -> task.name.startsWith("buildVanilla")}
+  dependsOn(setupDockerBuilder)
+  tasks.matching { Task task -> task.name.startsWith("buildVanilla")}.forEach { buildTask ->
+    dependsOn(buildTask)
+    buildTask.mustRunAfter(setupDockerBuilder)
+  }
 }
 
 task pushAllVanilla(dependsOn: tasks.matching { Task task -> task.name.startsWith("pushVanilla")})
@@ -270,9 +274,15 @@ forgeVersions.keySet().toArray().each {  version ->
   }
 }
 
-task buildAllForge(dependsOn: tasks.matching { Task task -> task.name.startsWith("buildForge")}) {
+task buildAllForge() {
   group "Mincraft"
   description "Build All Minecraft server images"
+
+  dependsOn(setupDockerBuilder)
+  tasks.matching { Task task -> task.name.startsWith("buildForge")}.forEach { buildTask ->
+    dependsOn(buildTask)
+    buildTask.mustRunAfter(setupDockerBuilder)
+  }
 }
 
 task pushAllForge(dependsOn: tasks.matching { Task task -> task.name.startsWith("pushForge")}) {

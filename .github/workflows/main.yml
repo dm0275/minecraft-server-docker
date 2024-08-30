@@ -26,4 +26,5 @@ jobs:
     strategy:
       matrix: ${{ fromJSON(needs.setup.outputs.matrix) }}
     steps:
+      - uses: actions/checkout@v1
       - run: ./gradlew ${{matrix.task}}

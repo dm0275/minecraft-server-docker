@@ -15,30 +15,26 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "publish"
-  publish:
-    # The type of runner that the job will run on
+  setup:
     runs-on: ubuntu-latest
-
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    outputs:
+      matrix: ${{ steps.dataStep.outputs.matrix }}
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v1
+      - id: dataStep
+        run: |
+          set -x
+          ./gradlew setupPush
+          echo "matrix=$(cat output.json)" >> $GITHUB_OUTPUT
 
-      # Publish the image
-      - name: Build Vanilla image
-        run: ./gradlew buildAllVanilla
-      - name: Build Forge image
-        run: ./gradlew buildAllForge
-      - name: Push Vanilla image
+  publish:
+    needs: setup
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJSON(needs.setup.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v3
+      - run: ./gradlew ${{matrix.task}}
         env:
           DOCKER_USERNAME: ${{ secrets.dockerUsername }}
           DOCKER_TOKEN: ${{ secrets.dockerToken }}
-        run: ./gradlew pushAllVanilla
-      - name: Push Forge image
-        env:
-          DOCKER_USERNAME: ${{ secrets.dockerUsername }}
-          DOCKER_TOKEN: ${{ secrets.dockerToken }}
-        run: ./gradlew pushAllForge

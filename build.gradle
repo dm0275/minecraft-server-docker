@@ -10,6 +10,7 @@ buildscript {
 }
 
 ext {
+  dockerBuilder = "docker-builder"
   qname = "dm0275/minecraft-server"
   worldName = System.getenv("WORLD") ?: "world"
   vanillaDirectories = ["data/$worldName/world", "data/$worldName/mods"]
@@ -185,8 +186,27 @@ task stop(type: Exec) {
   commandLine "bash", "-c", "${envVars} && docker-compose stop"
 }
 
+task setupDockerBuilder() {
+  doLast {
+    def stdout = new ByteArrayOutputStream()
+    exec{
+      commandLine "docker buildx ls".tokenize()
+      standardOutput = stdout
+      errorOutput = stdout
+      ignoreExitValue true
+    }
+
+    if (!stdout.toString().contains(dockerBuilder)) {
+      exec {
+        commandLine("docker buildx create --name $dockerBuilder --driver docker-container".tokenize())
+      }
+    }
+  }
+}
+
 vanillaVersions.keySet().each { version ->
-  String buildCmd = """docker build \
+  String buildCmd = """docker buildx build --builder ${dockerBuilder} 
+            --platform=linux/amd64,linux/arm64 \
             --file vanilla/Dockerfile \
             --build-arg mc_version=${version} \
             --build-arg mc_url_link=${vanillaVersions.get(version)['url']} \
@@ -195,6 +215,7 @@ vanillaVersions.keySet().each { version ->
   tasks.create(name: "buildVanilla${version}", type: Exec) {
     group "Mincraft"
     description "Build Minecraft server v${version} image"
+    dependsOn(setupDockerBuilder)
     if (version == vanillaVersions.keySet().last()) {
       commandLine "${buildCmd} -t ${latestTag} .".tokenize()
     } else {
@@ -205,21 +226,29 @@ vanillaVersions.keySet().each { version ->
   tasks.create(name: "pushVanilla${version}", dependsOn: dockerLogin, type: Exec) {
     group "Mincraft"
     description "Push Minecraft server v${version} image"
+    dependsOn(setupDockerBuilder)
+
     if (version == vanillaVersions.keySet().last()) {
-      commandLine "bash", "-c", """docker push ${qname}:${version} \
-            && docker push ${latestTag}"""
+      commandLine "${buildCmd} -t ${latestTag} --push .".tokenize()
     } else {
-      commandLine "docker push ${qname}:${version}".tokenize()
+      commandLine "${buildCmd} --push .".tokenize()
     }
   }
 }
 
-task buildAllVanilla(dependsOn: tasks.matching { Task task -> task.name.startsWith("buildVanilla")})
+task buildAllVanilla() {
+  dependsOn(setupDockerBuilder)
+  tasks.matching { Task task -> task.name.startsWith("buildVanilla")}.forEach { buildTask ->
+    dependsOn(buildTask)
+    buildTask.mustRunAfter(setupDockerBuilder)
+  }
+}
 
 task pushAllVanilla(dependsOn: tasks.matching { Task task -> task.name.startsWith("pushVanilla")})
 
 forgeVersions.keySet().toArray().each {  version ->
-  String buildCmd = """docker build \
+  String buildCmd = """docker buildx build --builder ${dockerBuilder} 
+        --platform=linux/amd64,linux/arm64 \
         --file forge/Dockerfile \
         --build-arg mc_version=${version} \
         --build-arg forge_version=${forgeVersions.get(version)['forgeVersion']} \
@@ -228,6 +257,7 @@ forgeVersions.keySet().toArray().each {  version ->
   tasks.create(name: "buildForge${version}", type: Exec) {
     group "Mincraft"
     description "Build Forge Minecraft server v${version} image (forge v${forgeVersions.get(version)['forgeVersion']})"
+    dependsOn(setupDockerBuilder)
     if (version == forgeVersions.keySet().toArray().last()) {
       commandLine "${buildCmd} -t ${latestTagForge} .".tokenize()
     } else {
@@ -238,21 +268,72 @@ forgeVersions.keySet().toArray().each {  version ->
   tasks.create(name: "pushForge${version}", dependsOn: dockerLogin, type: Exec) {
     group "Mincraft"
     description "Push Forge Minecraft server v${version} image"
+    dependsOn(setupDockerBuilder)
+
     if (version == forgeVersions.keySet().toArray().last()) {
-      commandLine "bash", "-c", """docker push ${qname}:forge-${version} \
-            && docker push ${latestTagForge}"""
+      commandLine "${buildCmd} -t ${latestTagForge} --push .".tokenize()
     } else {
-      commandLine "docker push ${qname}:forge-${version}".tokenize()
+      commandLine "${buildCmd} --push .".tokenize()
     }
   }
 }
 
-task buildAllForge(dependsOn: tasks.matching { Task task -> task.name.startsWith("buildForge")}) {
+task buildAllForge() {
   group "Mincraft"
   description "Build All Minecraft server images"
+
+  dependsOn(setupDockerBuilder)
+  tasks.matching { Task task -> task.name.startsWith("buildForge")}.forEach { buildTask ->
+    dependsOn(buildTask)
+    buildTask.mustRunAfter(setupDockerBuilder)
+  }
 }
 
 task pushAllForge(dependsOn: tasks.matching { Task task -> task.name.startsWith("pushForge")}) {
   group "Mincraft"
   description "Build All Forge Minecraft server images"
+}
+
+task setupBuild {
+  doLast {
+    def tasksJson = "{\"include\": ["
+    def taskList = tasks.matching { Task task -> task.name.startsWith("build") }
+    taskList.eachWithIndex { Task buildTask, int i ->
+        if (buildTask.name.contains("buildAll") || buildTask.name.contains("buildEnvironment")) {
+          return
+        }
+
+        if (i == taskList.size()-1) {
+          tasksJson += "{\"task\": \"${buildTask.name}\"}"
+        } else {
+          tasksJson += "{\"task\": \"${buildTask.name}\"},"
+        }
+    }
+    tasksJson += "]}"
+
+    def output = new File('output.json')
+    output.write(tasksJson)
+  }
+}
+
+task setupPush {
+  doLast {
+    def tasksJson = "{\"include\": ["
+    def taskList = tasks.matching { Task task -> task.name.startsWith("push") }
+    taskList.eachWithIndex { Task buildTask, int i ->
+      if (buildTask.name.contains("pushAll")) {
+        return
+      }
+
+      if (i == taskList.size()-1) {
+        tasksJson += "{\"task\": \"${buildTask.name}\"}"
+      } else {
+        tasksJson += "{\"task\": \"${buildTask.name}\"},"
+      }
+    }
+    tasksJson += "]}"
+
+    def output = new File('output.json')
+    output.write(tasksJson)
+  }
 }

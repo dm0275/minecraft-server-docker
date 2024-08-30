@@ -16,3 +16,5 @@ vendor/
 
 # Files
 test.sh
+.DS_Store
+output.json

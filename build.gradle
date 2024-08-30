@@ -10,6 +10,7 @@ buildscript {
 }
 
 ext {
+  dockerBuilder = "docker-builder"
   qname = "dm0275/minecraft-server"
   worldName = System.getenv("WORLD") ?: "world"
   vanillaDirectories = ["data/$worldName/world", "data/$worldName/mods"]
@@ -186,7 +187,8 @@ task stop(type: Exec) {
 }
 
 vanillaVersions.keySet().each { version ->
-  String buildCmd = """docker build \
+  String buildCmd = """docker buildx build --builder ${dockerBuilder} 
+            --platform=linux/amd64,linux/arm64 \
             --file vanilla/Dockerfile \
             --build-arg mc_version=${version} \
             --build-arg mc_url_link=${vanillaVersions.get(version)['url']} \
@@ -214,12 +216,33 @@ vanillaVersions.keySet().each { version ->
   }
 }
 
-task buildAllVanilla(dependsOn: tasks.matching { Task task -> task.name.startsWith("buildVanilla")})
+task setupDockerBuilder() {
+  doLast {
+    def stdout = new ByteArrayOutputStream()
+    exec{
+      commandLine "docker buildx ls".tokenize()
+      standardOutput = stdout
+      errorOutput = stdout
+      ignoreExitValue true
+    }
+
+    if (!stdout.toString().contains(dockerBuilder)) {
+      exec {
+        commandLine("docker buildx create --name $dockerBuilder --driver docker-container".tokenize())
+      }
+    }
+  }
+}
+
+task buildAllVanilla() {
+  dependsOn tasks.matching { Task task -> task.name.startsWith("buildVanilla")}
+}
 
 task pushAllVanilla(dependsOn: tasks.matching { Task task -> task.name.startsWith("pushVanilla")})
 
 forgeVersions.keySet().toArray().each {  version ->
-  String buildCmd = """docker build \
+  String buildCmd = """docker buildx build --builder ${dockerBuilder} 
+        --platform=linux/amd64,linux/arm64 \
         --file forge/Dockerfile \
         --build-arg mc_version=${version} \
         --build-arg forge_version=${forgeVersions.get(version)['forgeVersion']} \

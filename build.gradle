@@ -227,10 +227,9 @@ vanillaVersions.keySet().each { version ->
     group "Mincraft"
     description "Push Minecraft server v${version} image"
     if (version == vanillaVersions.keySet().last()) {
-      commandLine "bash", "-c", """docker push ${qname}:${version} \
-            && docker push ${latestTag}"""
+      commandLine "${buildCmd} -t ${latestTag} --push .".tokenize()
     } else {
-      commandLine "docker push ${qname}:${version}".tokenize()
+      commandLine "${buildCmd} --push .".tokenize()
     }
   }
 }
@@ -267,11 +266,11 @@ forgeVersions.keySet().toArray().each {  version ->
   tasks.create(name: "pushForge${version}", dependsOn: dockerLogin, type: Exec) {
     group "Mincraft"
     description "Push Forge Minecraft server v${version} image"
+
     if (version == forgeVersions.keySet().toArray().last()) {
-      commandLine "bash", "-c", """docker push ${qname}:forge-${version} \
-            && docker push ${latestTagForge}"""
+      commandLine "${buildCmd} -t ${latestTagForge} --push .".tokenize()
     } else {
-      commandLine "docker push ${qname}:forge-${version}".tokenize()
+      commandLine "${buildCmd} --push .".tokenize()
     }
   }
 }
@@ -306,6 +305,28 @@ task setupBuild {
         } else {
           tasksJson += "{\"task\": \"${buildTask.name}\"},"
         }
+    }
+    tasksJson += "]}"
+
+    def output = new File('output.json')
+    output.write(tasksJson)
+  }
+}
+
+task setupPush {
+  doLast {
+    def tasksJson = "{\"include\": ["
+    def taskList = tasks.matching { Task task -> task.name.startsWith("push") }
+    taskList.eachWithIndex { Task buildTask, int i ->
+      if (buildTask.name.contains("pushAll")) {
+        return
+      }
+
+      if (i == taskList.size()-1) {
+        tasksJson += "{\"task\": \"${buildTask.name}\"}"
+      } else {
+        tasksJson += "{\"task\": \"${buildTask.name}\"},"
+      }
     }
     tasksJson += "]}"
 

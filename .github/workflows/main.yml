@@ -9,11 +9,20 @@ on:
       - master
 
 jobs:
-  build:
+  setup:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.dataStep.outputs.matrix }}
     steps:
-    - uses: actions/checkout@v1
-    - name: Build Vanilla image
-      run: ./gradlew buildAllVanilla
-    - name: Build Forge image
-      run: ./gradlew buildAllForge
+      - id: dataStep
+        run: |
+          set -x
+          ./gradlew setupBuild
+          echo "matrix=$(cat output.json)" >> $GITHUB_OUTPUT
+  build:
+    needs: setup
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJSON(needs.setup.outputs.matrix) }}
+    steps:
+      - run: ./gradlew ${{matrix.task}}

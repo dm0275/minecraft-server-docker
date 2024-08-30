@@ -14,6 +14,7 @@ jobs:
     outputs:
       matrix: ${{ steps.dataStep.outputs.matrix }}
     steps:
+      - uses: actions/checkout@v1
       - id: dataStep
         run: |
           set -x

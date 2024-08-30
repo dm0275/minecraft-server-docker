@@ -292,7 +292,7 @@ task pushAllForge(dependsOn: tasks.matching { Task task -> task.name.startsWith(
 
 task setupBuild {
   doLast {
-    def tasksJson = "\"include\": ["
+    def tasksJson = "{\"include\": ["
     def taskList = tasks.matching { Task task -> task.name.startsWith("build") }
     taskList.eachWithIndex { Task buildTask, int i ->
         if (buildTask.name.contains("buildAll") || buildTask.name.contains("buildEnvironment")) {
@@ -305,7 +305,7 @@ task setupBuild {
           tasksJson += "{\"task\": \"${buildTask.name}\"},"
         }
     }
-    tasksJson += "]"
+    tasksJson += "]}"
 
     def output = new File('output.json')
     output.write(tasksJson)

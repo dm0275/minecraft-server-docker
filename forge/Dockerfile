@@ -1,12 +1,17 @@
 FROM ubuntu:22.04
 
 #-------------------------------------------------------------------------------
-#  Environment Variables
+#  Build Args
 #-------------------------------------------------------------------------------
 ARG mc_version
 ARG forge_version
 ARG java_version
+ARG TARGETOS
+ARG TARGETARCH
 
+#-------------------------------------------------------------------------------
+#  Environment Variables
+#-------------------------------------------------------------------------------
 ENV JAVA_MIN_MEM=1G \
     JAVA_MAX_MEM=2G \
     MC_USER=minecraft \
@@ -15,7 +20,7 @@ ENV JAVA_MIN_MEM=1G \
     MC_VERSION=${mc_version} \
     FORGE_VERSION=${forge_version} \
     MINECRAFT_HOME=/opt/minecraft \
-    JAVA_HOME=/usr/lib/jvm/java-${java_version}-openjdk-amd64
+    JAVA_HOME=/usr/lib/jvm/java-${java_version}-openjdk-${TARGETARCH}
 
 EXPOSE 25565
 

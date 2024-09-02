@@ -12,7 +12,6 @@ import java.io.File
 
 object Utils {
     var gson: Gson = GsonBuilder().create()
-//    var gson: Gson = GsonBuilder().setPrettyPrinting().create()
     val mapper = ObjectMapper(YAMLFactory()).registerKotlinModule()
 
     fun readConfig(file: File): List<ServerConfig> {

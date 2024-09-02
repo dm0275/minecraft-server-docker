@@ -1,6 +1,4 @@
 # Directories
-config/
-data/
 mods
 world
 matt_dad_world/
@@ -13,6 +11,7 @@ mods*/
 .idea/
 .gradle/
 vendor/
+build/
 
 # Files
 test.sh

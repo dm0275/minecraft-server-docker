@@ -1,0 +1,26 @@
+serverList:
+  - javaVersion: 8
+    version: 1.13.2
+    url: https://launcher.mojang.com/v1/objects/3737db93722a9e39eeada7c27e7aca28b144ffa7/server.jar
+  - javaVersion: 8
+    version: 1.14.4
+    url: https://launcher.mojang.com/v1/objects/3dc3d84a581f14691199cf6831b71ed1296a9fdf/server.jar
+  - javaVersion: 8
+    version: 1.15.2
+    url: https://launcher.mojang.com/v1/objects/bb2b6b1aefcd70dfd1892149ac3a215f6c636b07/server.jar
+  - javaVersion: 8
+    version: 1.16.5
+    url: https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar
+  - javaVersion: 8
+    version: 1.17.1
+    url: https://launcher.mojang.com/v1/objects/a16d67e5807f57fc4e550299cf20226194497dc2/server.jar
+  - javaVersion: 8
+    version: 1.18.1
+    url: https://launcher.mojang.com/v1/objects/125e5adf40c659fd3bce3e66e67a16bb49ecc1b9/server.jar
+  - javaVersion: 17
+    version: 1.19.2
+    url: https://piston-data.mojang.com/v1/objects/f69c284232d7c7580bd89a5a4931c3581eae1378/server.jar
+  - javaVersion: 17
+    version: 1.19.3
+    url: https://launcher.mojang.com/v1/objects/c9df48efed58511cdd0213c56b9013a7b5c9ac1f/server.jar
+    latest: true

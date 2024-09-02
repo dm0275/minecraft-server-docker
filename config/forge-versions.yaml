@@ -1,0 +1,32 @@
+serverList:
+  - version: 1.12.2
+    javaVersion: 8
+    forgeVersion: 14.23.5.2859
+  - version: 1.13.2
+    javaVersion: 8
+    forgeVersion: 25.0.223
+  - version: 1.14.4
+    javaVersion: 8
+    forgeVersion: 28.2.26
+  - version: 1.15.2
+    javaVersion: 8
+    forgeVersion: 31.2.57
+  - version: 1.16.5
+    javaVersion: 8
+    forgeVersion: 36.2.42
+  - version: 1.18.2
+    javaVersion: 17
+    forgeVersion: 40.2.21
+  - version: 1.19.2
+    javaVersion: 17
+    forgeVersion: 43.3.0
+  - version: 1.19.3
+    javaVersion: 17
+    forgeVersion: 44.1.0
+  - version: 1.20.1
+    javaVersion: 17
+    forgeVersion: 47.3.6
+  - version: 1.20.4
+    javaVersion: 17
+    latest: true
+    forgeVersion: 49.0.22

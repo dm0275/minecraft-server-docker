@@ -1,4 +1,7 @@
 import com.fussionlabs.Utils
+import com.fussionlabs.data.Include
+import com.fussionlabs.data.TaskMatrix
+import org.gradle.internal.impldep.com.google.api.client.json.Json
 import java.io.ByteArrayOutputStream
 
 val dockerBuilder = "docker-builder"
@@ -61,4 +64,27 @@ vanillaVersions.forEachIndexed { index, serverConfig ->
         }
         commandLine = "$buildCmd .".split(" ")
     }
+
+    tasks.register("pushVanilla${serverConfig.version}", Exec::class.java) {
+        group = "Minecraft"
+        description = "Push Minecraft server v${serverConfig.version} image"
+        dependsOn("dockerLogin")
+        dependsOn("setupDockerBuilder")
+
+        if (serverConfig.latest) {
+            buildCmd += " -t $latestTag"
+        }
+        commandLine = "$buildCmd --push .".split(" ")
+    }
+}
+
+tasks.register("setupBuild") {
+    val config = TaskMatrix()
+    val taskList = tasks.matching { task -> task.name.startsWith("build") && !task.name.contains("buildEnvironment") }
+    taskList.forEach { task ->
+        config.include.add(Include(task.name))
+    }
+    val data = Utils.convertToJson(config)
+    val buildJson = File("$projectDir/output.json")
+    buildJson.writeText(data)
 }

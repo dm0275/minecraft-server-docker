@@ -11,3 +11,4 @@ data class ServerConfig(
     val url: String = "",
     val forgeVersion: String = ""
 ){}
+

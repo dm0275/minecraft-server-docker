@@ -28,5 +28,5 @@ serverList:
     forgeVersion: 47.3.6
   - version: 1.20.4
     javaVersion: 17
-    forgeVersion: 49.0.22
     latest: true
+    forgeVersion: 49.0.22

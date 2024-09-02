@@ -78,9 +78,53 @@ vanillaVersions.forEachIndexed { index, serverConfig ->
     }
 }
 
+forgeVersions.forEachIndexed { index, serverConfig ->
+    var buildCmd = "docker buildx build --builder $dockerBuilder " +
+            "--platform=linux/amd64,linux/arm64 " +
+            "--file forge/Dockerfile " +
+            "--build-arg mc_version=${serverConfig.version} " +
+            "--build-arg forge_version=${serverConfig.forgeVersion} " +
+            "--build-arg java_version=${serverConfig.javaVersion} " +
+            "-t ${qname}:forge-${serverConfig.version}"
+
+    tasks.register("buildForge${serverConfig.version}", Exec::class.java) {
+        group = "Minecraft"
+        description = "Build Minecraft Forge server v${serverConfig.version} image (forge v${serverConfig.forgeVersion})"
+        dependsOn("setupDockerBuilder")
+
+        if (serverConfig.latest) {
+            buildCmd += " -t $latestTag"
+        }
+        commandLine = "$buildCmd .".split(" ")
+    }
+
+    tasks.register("pushForge${serverConfig.version}", Exec::class.java) {
+        group = "Minecraft"
+        description = "Push Minecraft Forge server v${serverConfig.version} image"
+        dependsOn("dockerLogin")
+        dependsOn("setupDockerBuilder")
+
+        if (serverConfig.latest) {
+            buildCmd += " -t $latestTag"
+        }
+        commandLine = "$buildCmd --push .".split(" ")
+    }
+}
+
 tasks.register("setupBuild") {
     val config = TaskMatrix()
     val taskList = tasks.matching { task -> task.name.startsWith("build") && !task.name.contains("buildEnvironment") }
+    taskList.forEach { task ->
+        config.include.add(Include(task.name))
+    }
+    val data = Utils.convertToJson(config)
+    val buildJson = File("$projectDir/output.json")
+    buildJson.writeText(data)
+}
+
+tasks.register("setupPush") {
+    val config = TaskMatrix()
+    val taskList = tasks.matching { task -> task.name.startsWith("push") }
     taskList.forEach { task ->
         config.include.add(Include(task.name))
     }

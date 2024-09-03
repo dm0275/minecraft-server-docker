@@ -33,6 +33,6 @@ serverList:
     javaVersion: 17
     forgeVersion: 50.1.14
   - version: 1.21.1
-    javaVersion: 17
+    javaVersion: 21
     latest: true
     forgeVersion: 52.0.9

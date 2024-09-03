@@ -23,4 +23,10 @@ serverList:
   - javaVersion: 17
     version: 1.19.3
     url: https://launcher.mojang.com/v1/objects/c9df48efed58511cdd0213c56b9013a7b5c9ac1f/server.jar
+  - javaVersion: 17
+    version: 1.20.6
+    url: https://piston-data.mojang.com/v1/objects/145ff0858209bcfc164859ba735d4199aafa1eea/server.jar
+  - javaVersion: 17
+    version: 1.21.1
+    url: https://piston-data.mojang.com/v1/objects/59353fb40c36d304f2035d51e7d6e6baa98dc05c/server.jar
     latest: true

@@ -12,6 +12,7 @@ mods*/
 .gradle/
 vendor/
 build/
+data/
 
 # Files
 test.sh

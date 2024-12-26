@@ -91,7 +91,7 @@ ext {
           'forgeVersion': '49.0.22'
       ],
       '1.21.4': [
-          'javaVersion': '17',
+          'javaVersion': '21',
           'forgeVersion': '54.0.12'
       ],
   ]

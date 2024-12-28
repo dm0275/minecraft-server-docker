@@ -19,6 +19,7 @@ ENV JAVA_MIN_MEM=1G \
     MC_USER_ID=1000 \
     MC_VERSION=${mc_version} \
     MC_VANILLA=true \
+    MC_SERVER_TYPE=vanilla \
     MC_URL_LINK=${mc_url_link} \
     MINECRAFT_HOME=/opt/minecraft \
     JAVA_HOME=/usr/lib/jvm/java-${java_version}-openjdk-${TARGETARCH}

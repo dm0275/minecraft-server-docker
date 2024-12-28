@@ -3,16 +3,18 @@
 set -euo pipefail
 
 function run_minecraft {
-    if [ "$MC_VANILLA" = true ]; then
-        ${JAVA_HOME}/bin/java -jar -Xms"${JAVA_MAX_MEM}" -Xmx"${JAVA_MAX_MEM}"  ${MINECRAFT_HOME}/minecraft_server."${MC_VERSION}".jar
-    elif [ "$MC_VANILLA" = false ]; then
+    if [ "$MC_SERVER_TYPE" = "vanilla" ]; then
+        ${JAVA_HOME}/bin/java -jar -Xms"${JAVA_MAX_MEM}" -Xmx"${JAVA_MAX_MEM}" ${MINECRAFT_HOME}/minecraft_server."${MC_VERSION}".jar
+    elif [ "$MC_SERVER_TYPE" = "forge" ]; then
         if [ -f "${MINECRAFT_HOME}/run.sh" ]; then
             ${MINECRAFT_HOME}/run.sh
         else
-            ${JAVA_HOME}/bin/java -jar -Xms"${JAVA_MAX_MEM}" -Xmx"${JAVA_MAX_MEM}"  ${MINECRAFT_HOME}/forge-"${MC_VERSION}"-"${FORGE_VERSION}".jar
+            ${JAVA_HOME}/bin/java -jar -Xms"${JAVA_MAX_MEM}" -Xmx"${JAVA_MAX_MEM}" ${MINECRAFT_HOME}/forge-"${MC_VERSION}"-"${FORGE_VERSION}".jar
         fi
+    elif [ "$MC_SERVER_TYPE" = "fabric" ]; then
+        ${JAVA_HOME}/bin/java -jar -Xms"${JAVA_MAX_MEM}" -Xmx"${JAVA_MAX_MEM}" ${MINECRAFT_HOME}/fabric-server-mc-"${FABRIC_VERSION}".jar nogui
     else
-        echo "Unknown Minecraft configuration, check the \$MC_VANILLA build arg"
+        echo "Unknown Minecraft server type: $MC_SERVER_TYPE. Supported types are 'vanilla', 'forge', and 'fabric'."
     fi
 }
 

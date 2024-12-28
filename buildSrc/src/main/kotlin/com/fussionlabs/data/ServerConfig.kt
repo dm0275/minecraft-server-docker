@@ -9,6 +9,7 @@ data class ServerConfig(
     val version: String,
     val latest: Boolean = false,
     val url: String = "",
-    val forgeVersion: String = ""
+    val forgeVersion: String = "",
+    val fabricVersion: String = "",
+    val fabricInstallerVersion: String = ""
 ){}
-

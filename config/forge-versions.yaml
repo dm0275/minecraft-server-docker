@@ -34,5 +34,8 @@ serverList:
     forgeVersion: 50.1.14
   - version: 1.21.1
     javaVersion: 21
-    latest: true
     forgeVersion: 52.0.9
+  - version: 1.21.4
+    javaVersion: 21
+    latest: true
+    forgeVersion: 54.0.12

@@ -1,0 +1,6 @@
+serverList:
+  - version: 1.20.1
+    javaVersion: 17
+    latest: true
+    fabricVersion: 0.16.9
+    fabricInstallerVersion: 1.0.1

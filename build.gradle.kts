@@ -1,6 +1,5 @@
 import com.fussionlabs.Utils
-import com.fussionlabs.data.Include
-import com.fussionlabs.data.TaskMatrix
+import com.fussionlabs.data.*
 import java.io.ByteArrayOutputStream
 
 val dockerBuilder = "docker-builder"
@@ -15,6 +14,10 @@ val vanillaDirectories = listOf("data/$worldName/world", "data/$worldName/mods")
 // Forge Config
 val forgeDirectories = listOf("data_forge/$worldName/world", "data_forge/$worldName/mods")
 val forgeVersions = Utils.readConfig(File("$projectDir/config/forge-versions.yaml"))
+
+// Fabric Config
+val fabricDirectories = listOf("data_fabric/$worldName/world", "data_fabric/$worldName/mods")
+val fabricVersions = Utils.readConfig(File("$projectDir/config/fabric-versions.yaml"))
 
 tasks.register("test") {
     doLast {
@@ -100,6 +103,40 @@ forgeVersions.forEachIndexed { index, serverConfig ->
     tasks.register("pushForge${serverConfig.version}", Exec::class.java) {
         group = "Minecraft"
         description = "Push Minecraft Forge server v${serverConfig.version} image"
+        dependsOn("dockerLogin")
+        dependsOn("setupDockerBuilder")
+
+        if (serverConfig.latest) {
+            buildCmd += " -t $latestTag"
+        }
+        commandLine = "$buildCmd --push .".split(" ")
+    }
+}
+
+fabricVersions.forEachIndexed { index, serverConfig ->
+    var buildCmd = "docker buildx build --builder $dockerBuilder " +
+            "--platform=linux/amd64,linux/arm64 " +
+            "--file fabric/Dockerfile " +
+            "--build-arg mc_version=${serverConfig.version} " +
+            "--build-arg fabric_version=${serverConfig.fabricVersion} " +
+            "--build-arg fabric_installer_version=${serverConfig.fabricInstallerVersion} " +
+            "--build-arg java_version=${serverConfig.javaVersion} " +
+            "-t ${qname}:fabric-${serverConfig.version}"
+
+    tasks.register("buildFabric${serverConfig.version}", Exec::class.java) {
+        group = "Minecraft"
+        description = "Build Minecraft Fabric server v${serverConfig.version} image (fabric v${serverConfig.fabricVersion})"
+        dependsOn("setupDockerBuilder")
+
+        if (serverConfig.latest) {
+            buildCmd += " -t $latestTag"
+        }
+        commandLine = "$buildCmd .".split(" ")
+    }
+
+    tasks.register("pushFabric${serverConfig.version}", Exec::class.java) {
+        group = "Minecraft"
+        description = "Push Minecraft Fabric server v${serverConfig.version} image"
         dependsOn("dockerLogin")
         dependsOn("setupDockerBuilder")
 

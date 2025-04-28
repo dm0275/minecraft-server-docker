@@ -2,6 +2,15 @@
 
 set -ex
 
+if [ -f "${MINECRAFT_HOME}/server.properties" ]; then
+    echo "✅ server.properties exists."
+    ls "${MINECRAFT_HOME}/server.properties"
+    cat "${MINECRAFT_HOME}/server.properties"
+else
+    echo "❌ server.properties does not exist, creating temp file"
+    cp "${MINECRAFT_HOME}/server.properties.bk" "${MINECRAFT_HOME}/server.properties"
+fi
+
 if [ "$2" == 'start-minecraft.sh' ]; then
 
   if [ "$GAMEMODE" != '' ]; then

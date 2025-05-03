@@ -88,7 +88,7 @@ forgeVersions.forEachIndexed { index, serverConfig ->
             "--build-arg mc_version=${serverConfig.version} " +
             "--build-arg forge_version=${serverConfig.forgeVersion} " +
             "--build-arg java_version=${serverConfig.javaVersion} " +
-            "--load -t ${qname}:forge-${serverConfig.version}"
+            "-t ${qname}:forge-${serverConfig.version}"
 
     tasks.register("buildForge${serverConfig.version}", Exec::class.java) {
         group = "Minecraft"

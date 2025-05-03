@@ -6,6 +6,7 @@ val dockerBuilder = "docker-builder"
 val qname = "dm0275/minecraft-server"
 val latestTag = "${qname}:latest"
 val worldName = System.getenv("WORLD") ?: "world"
+val loadImages = System.getenv("LOAD_IMAGES") ?: "false"
 
 // Vanilla Config
 val vanillaVersions = Utils.readConfig(File("$projectDir/config/vanilla-versions.yaml"))
@@ -97,6 +98,11 @@ forgeVersions.forEachIndexed { index, serverConfig ->
         if (serverConfig.latest) {
             buildCmd += " -t $latestTag"
         }
+
+        if (loadImages == "true") {
+            buildCmd += " --load"
+        }
+
         commandLine = "$buildCmd .".split(" ")
     }
 

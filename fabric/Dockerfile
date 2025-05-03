@@ -47,7 +47,7 @@ RUN mkdir ${MINECRAFT_HOME} \
     && echo "eula=true" > eula.txt \
     && mkdir -p ${MINECRAFT_HOME}/data ${MINECRAFT_HOME}/mods ${MINECRAFT_HOME}/world
 
-COPY files/server.properties ${MINECRAFT_HOME}/server.properties
+COPY files/server.properties.bk ${MINECRAFT_HOME}/server.properties.bk
 COPY files/start-minecraft.sh ${MINECRAFT_HOME}/
 
 RUN chown -R "${MC_USER}":"${MC_USER}" ${MINECRAFT_HOME} 

@@ -48,6 +48,8 @@ This project creates Docker images for running Minecraft servers, supporting bot
 | PREVENT_PROXY_CONNECTIONS     | false                   |                                                        |
 | USE_NATIVE_TRANSPORT          | true                    |                                                        |
 | ENABLE_RCON                   | false                   |                                                        |
+| RCON_PORT                     | 25575                   | Publish this port (e.g., `-p 25575:25575`) when RCON is enabled. |
+| RCON_PASSWORD                 | null                    | Required for RCON connections when `ENABLE_RCON=true`.  |
 
 
 _Gamemode: Survival mode is gametype=0, Creative is gametype=1, Adventure is gametype=2, and Spectator is gametype=3_
@@ -89,6 +91,8 @@ docker run --rm -d -e JAVA_MIN_MEM=3G -e JAVA_MAX_MEM=3G \
     -v $WORLD_DIR:/opt/minecraft/world -v $MODS_DIR:/opt/minecraft/mods -p 25565:25565 \
     dm0275/minecraft-server:latest
 ```
+
+To enable RCON, add `-e ENABLE_RCON=true -e RCON_PASSWORD=<secret> [-e RCON_PORT=25575]` and publish the RCON port (default `-p 25575:25575`).
 
 ## Building from Source
 The following tasks are available for building Minecraft server images:

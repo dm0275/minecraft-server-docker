@@ -49,7 +49,7 @@ This project creates Docker images for running Minecraft servers, supporting bot
 | USE_NATIVE_TRANSPORT          | true                    |                                                        |
 | ENABLE_RCON                   | false                   |                                                        |
 | RCON_PORT                     | 25575                   | Publish this port (e.g., `-p 25575:25575`) when RCON is enabled. |
-| RCON_PASSWORD                 | null                    | Required for RCON connections when `ENABLE_RCON=true`.  |
+| RCON_PASSWORD                 | minecraft               | Required for RCON connections when `ENABLE_RCON=true`.  |
 
 
 _Gamemode: Survival mode is gametype=0, Creative is gametype=1, Adventure is gametype=2, and Spectator is gametype=3_

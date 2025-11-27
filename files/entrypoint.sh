@@ -6,6 +6,15 @@ if [[ "$DEBUG" == "true" ]]; then
     set -x
 fi
 
+print_banner() {
+cat <<'EOF'
+==========================================
+   Minecraft Server Docker Entrypoint
+   Image: dm0275/minecraft-server
+==========================================
+EOF
+}
+
 replace_prop() {
     local key="$1"
     local value="$2"
@@ -73,6 +82,7 @@ function update_generated_properties() {
 
 
 if [ "$2" == 'start-minecraft.sh' ]; then
+    print_banner
     if [[ "$LOAD_PROPERTY_FILE" == 'true' && -f "${MINECRAFT_HOME}/server.properties" ]]; then
       echo "Using local server.properties file"
     else

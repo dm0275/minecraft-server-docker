@@ -217,6 +217,16 @@ function update_generated_properties() {
       sed -e "s|enable-rcon.*|enable-rcon=$ENABLE_RCON|g" \
        -i "${MINECRAFT_HOME}/server.properties"
     fi
+
+    if [ "$RCON_PORT" != '' ]; then
+      sed -e "s|rcon.port.*|rcon.port=$RCON_PORT|g" \
+       -i "${MINECRAFT_HOME}/server.properties"
+    fi
+
+    if [ "$RCON_PASSWORD" != '' ]; then
+      sed -e "s|rcon.password.*|rcon.password=$RCON_PASSWORD|g" \
+       -i "${MINECRAFT_HOME}/server.properties"
+    fi
 }
 
 

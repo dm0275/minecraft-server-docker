@@ -24,7 +24,7 @@ ENV JAVA_MIN_MEM=1G \
     MINECRAFT_HOME=/opt/minecraft \
     JAVA_HOME=/usr/lib/jvm/java-${java_version}-openjdk-${TARGETARCH}
 
-EXPOSE 25565
+EXPOSE 25565 25575
 
 #-------------------------------------------------------------------------------
 #  Add Minecraft user
@@ -59,4 +59,3 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 USER ${MC_USER}
 CMD ["/bin/bash", "start-minecraft.sh"]
-

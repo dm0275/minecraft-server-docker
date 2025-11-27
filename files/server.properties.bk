@@ -35,3 +35,5 @@ prevent-proxy-connections=false
 use-native-transport=true
 motd=Docker Minecraft Server
 enable-rcon=false
+rcon.port=25575
+rcon.password=minecraft

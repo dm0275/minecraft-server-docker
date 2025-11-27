@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-set -ex
+set -e
+
+if [[ "$DEBUG" == "true" ]]; then
+    set -x
+fi
 
 replace_prop() {
     local key="$1"
@@ -9,9 +13,18 @@ replace_prop() {
 
     [ -z "$value" ] && return
 
-    local tmp
+    # If the key is missing, append it instead of relying on in-place rename.
+    if ! grep -q "^${key}=" "$file"; then
+        echo "Adding ${key}=${value} to server.properties"
+        printf '%s=%s\n' "$key" "$value" >> "$file"
+        return
+    fi
+
+    local tmp old_line
+    old_line="$(grep -m1 "^${key}=" "$file" || true)"
     tmp="$(mktemp)"
     sed "s|^${key}=.*|${key}=${value}|" "$file" > "$tmp"
+    echo "Updating ${key}: ${old_line#*=} -> ${value}"
     cat "$tmp" > "$file"
     rm -f "$tmp"
 }
